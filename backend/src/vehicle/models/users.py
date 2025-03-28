@@ -27,3 +27,9 @@ class User(Base):
         back_populates="user",
         cascade="all, delete-orphan"
         )
+
+
+class TokenBlackList(Base):
+    __tablename__ = "token_blacklist"
+    
+    token: Mapped[str] = mapped_column(String(256), primary_key=True)

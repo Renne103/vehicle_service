@@ -1,6 +1,8 @@
 import jwt
 
 from datetime import timedelta, datetime, timezone
+
+from fastapi import Header, HTTPException, status
 from passlib.context import CryptContext
 
 from vehicle.configs.auth_config import settings
@@ -17,10 +19,10 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None) -> str:
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.now(timezone.utc) + expires_delta
+def create_access_token(username: str) -> str:
+    to_encode = dict(username=username)
+    if settings.ACCESS_TOKEN_EXPIRE_MINUTES:
+        expire = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     to_encode.update({"exp": expire})
@@ -33,3 +35,12 @@ def decode_access_token(token: str) -> dict | None:
         return jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
     except jwt.PyJWTError:
         return None
+
+
+def get_token_from_headers(autorization: str = Header()) -> str:
+    if not autorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authorization header format",
+        )
+    return autorization.removeprefix("Bearer ")
