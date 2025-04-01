@@ -45,3 +45,7 @@ class UserRepository:
         except Exception as e:
             self.session.rollback()
             raise e
+
+    def get_user_id_from_username(self, username: str) -> int | None:
+        stmt = select(User.id).where(User.username == username)
+        return self.session.execute(stmt).scalar_one_or_none()

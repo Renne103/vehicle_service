@@ -1,8 +1,9 @@
 import jwt
 
 from datetime import timedelta, datetime, timezone
+from typing import Annotated
 
-from fastapi import Header, HTTPException, status
+from fastapi import Header, HTTPException, status, Depends
 from passlib.context import CryptContext
 
 from vehicle.configs.auth_config import settings
@@ -44,3 +45,10 @@ def get_token_from_headers(autorization: str = Header()) -> str:
             detail="Invalid authorization header format",
         )
     return autorization.removeprefix("Bearer ")
+
+
+def get_current_username(token: Annotated[str, Depends(get_token_from_headers)]) -> str:
+    decoded_token = decode_access_token(token=token)
+    if decoded_token:
+        return decoded_token.get('username', None)
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
