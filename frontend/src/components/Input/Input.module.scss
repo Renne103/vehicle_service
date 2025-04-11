@@ -1,0 +1,66 @@
+@import '../../const/colors.scss';
+.input{
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	position: relative;
+	&_data{
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+		position: relative;
+		width: fit-content;
+	}
+}
+
+.error {
+	color: rgba(255, 0, 0);
+	font-size: 14px !important;
+	text-align: end;
+	position: absolute;
+	right: 0;
+	
+  }
+.title {
+	font-weight: 300;
+	font-size: 15px;
+	color: $grey;
+	text-align: start;
+	&__wrapper{
+		display: flex;
+		justify-content: space-between;
+		align-items:center;
+	}
+	&__required{
+		color: #8E8E93;
+		font-size: 16px;
+		font-weight: 300;
+	}
+}
+.field{
+	width: 100%;
+	font-size: 15px !important;
+	outline: none;
+	height: 40px;
+	border-radius: 10px;
+	border: 1px solid $grey_border;
+	padding: 0px 15px;
+	color: #2d3436;
+	&:-internal-autofill-selected {
+		color: white !important;
+		background-color: white !important;
+		appearance: none;
+	}
+}
+.icon {
+	padding-left: 22px;
+	padding-right: 15px;
+	cursor: pointer;
+}
+.line{
+	height: 1px;
+	width: 100%;
+	background-color: #AEAEB2;
+	position: absolute;
+	bottom: 0;
+}

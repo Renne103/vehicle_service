@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import styles from "./Onboarding.module.scss";
+import Button from "../../components/Button/Button";
 
 function Step({ type, step }: { type: "one" | "two" | "three"; step: number }) {
   let title = "",
@@ -39,8 +40,8 @@ function Step({ type, step }: { type: "one" | "two" | "three"; step: number }) {
       </div>
       <div className={styles.skip_wrapper}>
         {step === 3 ? (
-          <Link to={"/login"} className={styles.submit}>
-            Погнали!
+          <Link to={"/auth"} className={styles.submit}>
+            <Button>Погнали!</Button>
           </Link>
         ) : (
           <>

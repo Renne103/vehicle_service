@@ -4,17 +4,14 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { useAuth } from "./hooks/useAuth";
 import OnboardingPage from "./pages/OnboardingPage/OnboardingPage";
-import LoginPage from "./pages/LoginPage/LoginPage";
-import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import HomePage from "./pages/HomePage/HomePage";
 import AddVehiclePage from "./pages/AddVehiclePage/AddVehiclePage";
+import PrivateRoute from "./components/PrivateRoute";
 import "./App.scss";
+import AuthPage from "./pages/AuthPage/AuthPage";
 
 function App() {
-  const { isAuthenticated } = useAuth();
-
   return (
     <Router>
       <Routes>
@@ -22,22 +19,27 @@ function App() {
         <Route path="/onboarding/:step" element={<OnboardingPage />} />
 
         {/* Авторизация / Регистрация */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/auth" element={<AuthPage />} />
 
         {/* Защищённые маршруты */}
         <Route
           path="/"
-          element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />}
+          element={
+            <PrivateRoute>
+              <HomePage />
+            </PrivateRoute>
+          }
         />
         <Route
           path="/add-car"
           element={
-            isAuthenticated ? <AddVehiclePage /> : <Navigate to="/login" />
+            <PrivateRoute>
+              <AddVehiclePage />
+            </PrivateRoute>
           }
         />
 
-        {/* Редирект на онбординг по умолчанию */}
+        {/* Редирект по умолчанию */}
         <Route path="*" element={<Navigate to="/onboarding" />} />
       </Routes>
     </Router>
