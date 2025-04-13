@@ -25,7 +25,7 @@ class Cars(Base):
         CheckConstraint("mileage BETWEEN 0 AND 99999999"),
         nullable=False
         )
-    number: Mapped[str] = mapped_column(String(10), nullable=False)
+    plate_license: Mapped[str] = mapped_column(String(10), nullable=True)
     photo: Mapped[str] = mapped_column(String(256), nullable=True)
     
     user: Mapped["User"] = relationship(back_populates="cars")

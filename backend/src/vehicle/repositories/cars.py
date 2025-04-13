@@ -23,12 +23,15 @@ class CarsRepository:
             .where(User.username == username)
         )
         result = self.session.execute(stmt).mappings().all()
-        print(result, flush=True)
         return [UsersCarsSchema.model_validate(car) for car in result]
     
-    def add_car(self, user_id: int, data: NewCarSchema) -> None:
+    def add_car(self, user_id: int, data: NewCarSchema, username: str) -> list[UsersCarsSchema]:
         new_car = Cars(**data.model_dump(), user_id=user_id)
         self.session.add(new_car)
         self.session.commit()
         self.session.refresh(new_car)
-        
+        return self.get_users_cars(username=username)
+    
+    def exists_vin(self, vin: str) -> bool:
+        stmt = select(Cars.vin).where(Cars.vin == vin)
+        return self.session.execute(stmt).scalar_one_or_none() is not None

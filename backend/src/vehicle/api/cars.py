@@ -42,7 +42,10 @@ def get_cars(
             "model": TokenErrorResponse,
             "description": "Невалидный токен"
         }
-    })
+    },
+    status_code=status.HTTP_201_CREATED,
+    response_model=list[UsersCarsSchema]
+    )
 def add_car(
     new_car: NewCarSchema,
     username: str = Depends(get_current_username),
@@ -50,8 +53,5 @@ def add_car(
     ):
     repository = CarsRepository(session=session)
     service = CarsService(repository=repository)
-    service.add_car(username=username, data=new_car)
-    return JSONResponse(
-        status_code=status.HTTP_201_CREATED,
-        content=dict(message="Car added successfully")
-    )
+    cars = service.add_car(username=username, data=new_car)
+    return cars
