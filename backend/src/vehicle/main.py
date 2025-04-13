@@ -1,9 +1,12 @@
 import uvicorn
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 
 from vehicle.api.routers import all_routers
+from vehicle.utils.exeptions import CustomValidationError, AuthorizationError
 
 
 origins = [
@@ -24,6 +27,49 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    exeption_data = exc.errors()
+    exeption_out = []
+    for exeption in exeption_data:
+        location = exeption['loc'][-1]
+        message = exeption['msg'].split(", ")[-1]
+        exeption_out.append({
+            'msg': message,
+            'type': exeption['type'],
+            'input': exeption.get('input'),
+            'input_name': location
+        })
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={
+            'message': 'Ошибка валидации',
+            'detail': exeption_out
+        }
+    )
+
+
+@app.exception_handler(CustomValidationError)
+async def custom_validation_exception_handler(request: Request, exc: CustomValidationError):
+    return JSONResponse(
+        status_code=status.HTTP_406_NOT_ACCEPTABLE,
+        content={
+            "message": "Ошибка валидации",
+            "detail": exc.errors
+        }
+    )
+
+
+@app.exception_handler(AuthorizationError)
+async def authorization_exception_handler(request: Request, exc: AuthorizationError):
+    return JSONResponse(
+        status_code=status.HTTP_403_FORBIDDEN,
+        content={
+            "message": "Ошибка авторизации",
+            "detail": exc.detail
+        }
+    )
 
 for router in all_routers:
     app.include_router(router)
