@@ -13,6 +13,7 @@ from vehicle.services.users import UserService
 from vehicle.database.sessions import get_session
 from vehicle.utils.auth import get_token_from_headers
 from vehicle.utils.exeptions import AuthorizationError, CustomValidationError
+from vehicle.schemas.exeptions import ValidationOrAuthorizationErrorResponse, TokenErrorResponse
 
 
 router = APIRouter(
@@ -20,7 +21,19 @@ router = APIRouter(
 )
 
 
-@router.post("/register", response_model=RegisterResponseSchema)
+@router.post(
+    "/register",
+    response_model=RegisterResponseSchema,
+    responses={
+        406: {
+            "model": ValidationOrAuthorizationErrorResponse,
+            "description": "Ошибка валидации пользовательских данных"
+        },
+        422: {
+            "model": ValidationOrAuthorizationErrorResponse,
+            "description": "Ошибка валидации FastaAPI"
+        }
+    })
 def register(data: RegisterSchema, session: Session = Depends(get_session)):
     repository = UserRepository(session=session)
     service = UserService(repository=repository)
@@ -28,14 +41,41 @@ def register(data: RegisterSchema, session: Session = Depends(get_session)):
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=dict(username=response))
 
 
-@router.post('/login', response_model=LoginResponseSchema)
+@router.post(
+    '/login',
+    response_model=LoginResponseSchema,
+    responses={
+        406: {
+            "model": ValidationOrAuthorizationErrorResponse,
+            "description": "Ошибка валидации пользовательских данных"
+        },
+        422: {
+            "model": ValidationOrAuthorizationErrorResponse,
+            "description": "Ошибка валидации FastaAPI"
+        }
+    })
 def login(data: LoginSchema, session: Session = Depends(get_session)):
     repository = UserRepository(session=session)
     service = UserService(repository=repository)
     return service.login_user(data=data)
 
 
-@router.get('/logout')
+@router.get(
+    '/logout',
+    responses={
+        400: {
+            "model": TokenErrorResponse,
+            "description": "Невалидный токен"
+        },
+        406: {
+            "model": ValidationOrAuthorizationErrorResponse,
+            "description": "Ошибка валидации пользовательских данных"
+        },
+        422: {
+            "model": ValidationOrAuthorizationErrorResponse,
+            "description": "Ошибка валидации FastaAPI"
+        }
+    })
 def logout(
     session: Session = Depends(get_session),
     token: str = Depends(get_token_from_headers),

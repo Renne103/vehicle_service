@@ -7,6 +7,7 @@ from vehicle.repositories.cars import CarsRepository
 from vehicle.services.cars import CarsService
 from vehicle.database.sessions import get_session
 from vehicle.schemas.cars import UsersCarsSchema, NewCarSchema
+from vehicle.schemas.exeptions import TokenErrorResponse
 
 
 router = APIRouter(
@@ -15,7 +16,15 @@ router = APIRouter(
 )
 
 
-@router.get("/cars", response_model=list[UsersCarsSchema])
+@router.get(
+    "/cars",
+    response_model=list[UsersCarsSchema],
+    responses={
+        400: {
+            "model": TokenErrorResponse,
+            "description": "Невалидный токен"
+        }
+    })
 def get_cars(
     username: str = Depends(get_current_username), 
     session: Session = Depends(get_session)
@@ -26,7 +35,14 @@ def get_cars(
     return cars
 
 
-@router.post("/new_car")
+@router.post(
+    "/new_car",
+    responses={
+        400: {
+            "model": TokenErrorResponse,
+            "description": "Невалидный токен"
+        }
+    })
 def add_car(
     new_car: NewCarSchema,
     username: str = Depends(get_current_username),
