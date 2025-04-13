@@ -18,6 +18,8 @@ class CarsRepository:
                 Cars.vin,
                 Cars.year_of_release,
                 Cars.mileage,
+                Cars.plate_license,
+                Cars.photo
                 )
             .join(Cars.user)
             .where(User.username == username)
