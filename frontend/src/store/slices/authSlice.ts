@@ -4,25 +4,23 @@ import axios from '../../utils/axios';
 interface AuthState {
   token: string | null;
   username: string | null;
-  loading: boolean;
-  error: string | null;
+  error: Record<string, string>[] | null;
 }
 
 const initialState: AuthState = {
   token: localStorage.getItem('token'),
   username: null,
-  loading: false,
   error: null,
 };
 
 export const registerUser = createAsyncThunk(
   'auth/register',
-  async ({ username, password, secondPassword, tg }: any, thunkAPI) => {
+  async ({ username, password, second_password, tg }: any, thunkAPI) => {
     try {
       const res = await axios.post('/auth/register', {
         username,
         password,
-        'second-password': secondPassword,
+        'second_password': second_password,
         tg,
       });
       return res.data;
@@ -58,28 +56,23 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.loading = false;
         state.username = action.payload.username;
       })
       .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        console.log(action.payload);
+        state.error = action.payload as Record<string, string>[];
       })
       .addCase(loginUser.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false;
         state.token = action.payload.token;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.payload as Record<string, string>[];
       });
   },
 });

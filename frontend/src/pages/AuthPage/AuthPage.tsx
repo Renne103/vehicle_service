@@ -2,30 +2,33 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { loginUser, registerUser } from "../../store/slices/authSlice";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import Button from "../../components/Button/Button";
+import Input from "../../components/Input/Input";
+import styles from "./AuthPage.module.scss";
 
 interface AuthFormData {
   username: string;
   password: string;
-  secondPassword?: string;
+  second_password?: string;
   tg?: string;
 }
 
 function AuthPage() {
   const dispatch = useAppDispatch();
-  const { error, token } = useAppSelector((state) => state.auth);
+  const { error, token, username } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const [isRegister, setIsRegister] = useState(false);
 
+  const methods = useForm<AuthFormData>();
   const {
-    register,
     handleSubmit,
     reset,
     watch,
     formState: { errors },
-  } = useForm<AuthFormData>();
+    setError,
+  } = methods;
 
   const onSubmit = (data: AuthFormData) => {
     if (isRegister) {
@@ -33,7 +36,7 @@ function AuthPage() {
         registerUser({
           username: data.username,
           password: data.password,
-          secondPassword: data.secondPassword,
+          second_password: data.second_password,
           tg: data.tg,
         })
       );
@@ -50,60 +53,60 @@ function AuthPage() {
     reset(); // очищаем форму при смене режима
   }, [isRegister, reset]);
 
+  useEffect(() => {
+    error?.map((err) =>
+      setError(err.input_name as keyof AuthFormData, { message: err.msg })
+    );
+  }, [error]);
+
+  useEffect(() => {
+    setIsRegister(false);
+    reset();
+  }, [username, navigate]);
+
   return (
-    <div>
-      <h2>{isRegister ? "Регистрация" : "Вход"}</h2>
+    <div className={styles.page}>
+      <p className={styles.title}>{isRegister ? "Регистрация" : "Вход"}</p>
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+          <Input placeholder="Username" name="username" isRequired={true} />
+          <Input
+            placeholder="Password"
+            name="password"
+            isRequired={true}
+            isPassword
+          />
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          {...register("username", {
-            required: "Имя пользователя обязательно",
-          })}
-          placeholder="Username"
-        />
-        {errors.username && <p>{errors.username.message}</p>}
-
-        <input
-          type="password"
-          {...register("password", { required: "Пароль обязателен" })}
-          placeholder="Password"
-        />
-        {errors.password && <p>{errors.password.message}</p>}
-
-        {isRegister && (
-          <>
-            <input
-              type="password"
-              {...register("secondPassword", {
-                required: "Повторите пароль",
-                validate: (value) =>
-                  value === watch("password") || "Пароли не совпадают",
-              })}
-              placeholder="Confirm Password"
-            />
-            {errors.secondPassword && <p>{errors.secondPassword.message}</p>}
-
-            <input
-              {...register("tg", {
-                required: "Введите Telegram",
-              })}
-              placeholder="Telegram"
-            />
-          </>
-        )}
-
-        <Button type="submit">
-          {isRegister ? "Зарегистрироваться" : "Войти"}
-        </Button>
-      </form>
-
-      <button onClick={() => setIsRegister(!isRegister)}>
-        {isRegister
-          ? "Уже есть аккаунт? Войти"
-          : "Нет аккаунта? Зарегистрироваться"}
-      </button>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
+          {isRegister && (
+            <>
+              <Input
+                placeholder="Confirm Password"
+                name="second_password"
+                isRequired={true}
+                isPassword
+                validate={(value) =>
+                  value === watch("password") || "Пароли не совпадают"
+                }
+              />
+              <Input placeholder="Telegram" name="tg" isRequired={true} />
+            </>
+          )}
+          <Button type="submit">
+            {isRegister ? "Зарегистрироваться" : "Войти"}
+          </Button>
+          <p onClick={() => setIsRegister(!isRegister)}>
+            {isRegister ? (
+              <>
+                Уже есть аккаунт? <u>Войти</u>
+              </>
+            ) : (
+              <>
+                Нет аккаунта? <u>Зарегистрироваться</u>
+              </>
+            )}
+          </p>
+        </form>
+      </FormProvider>
     </div>
   );
 }
