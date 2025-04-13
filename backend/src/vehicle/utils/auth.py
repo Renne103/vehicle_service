@@ -41,8 +41,8 @@ def decode_access_token(token: str) -> dict | None:
         return None
 
 
-def get_token_from_headers(Autorization: str = Header()) -> str:
-    if not Autorization.startswith("Bearer "):
+def get_token_from_headers(Authorization: str = Header()) -> str:
+    if not Authorization.startswith("Bearer "):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=[{
@@ -50,7 +50,7 @@ def get_token_from_headers(Autorization: str = Header()) -> str:
                 "input_name": "token",
                 }],
         )
-    return Autorization.removeprefix("Bearer ")
+    return Authorization.removeprefix("Bearer ")
 
 
 def get_current_username(
