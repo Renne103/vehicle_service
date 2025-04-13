@@ -11,7 +11,7 @@ class CarsService:
     def get_users_cars(self, username: str) -> list[UsersCarsSchema]:
         return self.repository.get_users_cars(username=username)
 
-    def add_car(self, username: str, data: UsersCarsSchema) -> None:
+    def add_car(self, username: str, data: UsersCarsSchema) -> list[UsersCarsSchema]:
         if self.repository.exists_vin(vin=data.vin):
             raise CustomValidationError.single(
                 msg="Такой VIN уже существует",

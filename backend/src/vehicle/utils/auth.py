@@ -4,6 +4,7 @@ from datetime import timedelta, datetime, timezone
 from typing import Annotated
 
 from fastapi import Header, HTTPException, status, Depends
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
@@ -13,6 +14,8 @@ from vehicle.repositories.users import UserRepository
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+security = HTTPBearer()
 
 
 def get_hashed_password(password: str) -> str:
@@ -41,8 +44,8 @@ def decode_access_token(token: str) -> dict | None:
         return None
 
 
-def get_token_from_headers(Authorization: str = Header()) -> str:
-    if not Authorization.startswith("Bearer "):
+def get_token_from_headers(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
+    if not credentials.scheme.lower() == "bearer":
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=[{
@@ -50,7 +53,7 @@ def get_token_from_headers(Authorization: str = Header()) -> str:
                 "input_name": "token",
                 }],
         )
-    return Authorization.removeprefix("Bearer ")
+    return credentials.credentials
 
 
 def get_current_username(

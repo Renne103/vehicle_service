@@ -29,7 +29,7 @@ app.add_middleware(
 )
 
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
+def validation_exception_handler(request: Request, exc: RequestValidationError):
     exeption_data = exc.errors()
     exeption_out = []
     for exeption in exeption_data:
@@ -51,7 +51,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 
 @app.exception_handler(CustomValidationError)
-async def custom_validation_exception_handler(request: Request, exc: CustomValidationError):
+def custom_validation_exception_handler(request: Request, exc: CustomValidationError):
     return JSONResponse(
         status_code=status.HTTP_406_NOT_ACCEPTABLE,
         content={
@@ -62,7 +62,7 @@ async def custom_validation_exception_handler(request: Request, exc: CustomValid
 
 
 @app.exception_handler(AuthorizationError)
-async def authorization_exception_handler(request: Request, exc: AuthorizationError):
+def authorization_exception_handler(request: Request, exc: AuthorizationError):
     return JSONResponse(
         status_code=status.HTTP_403_FORBIDDEN,
         content={
@@ -70,6 +70,7 @@ async def authorization_exception_handler(request: Request, exc: AuthorizationEr
             "detail": exc.detail
         }
     )
+
 
 for router in all_routers:
     app.include_router(router)
