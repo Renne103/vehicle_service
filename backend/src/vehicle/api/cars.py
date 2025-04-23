@@ -6,7 +6,7 @@ from vehicle.utils.auth import get_current_username
 from vehicle.repositories.cars import CarsRepository
 from vehicle.services.cars import CarsService
 from vehicle.database.sessions import get_session
-from vehicle.schemas.cars import UsersCarsSchema, NewCarSchema
+from vehicle.schemas.cars import NewCarSchema, ViewCarSchema, UploadPhotoSchema
 from vehicle.schemas.exeptions import TokenErrorResponse
 
 
@@ -18,7 +18,7 @@ router = APIRouter(
 
 @router.get(
     "/cars",
-    response_model=list[UsersCarsSchema],
+    response_model=list[ViewCarSchema],
     responses={
         400: {
             "model": TokenErrorResponse,
@@ -44,7 +44,7 @@ def get_cars(
         }
     },
     status_code=status.HTTP_201_CREATED,
-    response_model=list[UsersCarsSchema]
+    response_model=list[NewCarSchema]
     )
 def add_car(
     new_car: NewCarSchema,
@@ -55,3 +55,23 @@ def add_car(
     service = CarsService(repository=repository)
     cars = service.add_car(username=username, data=new_car)
     return cars
+
+
+@router.post(
+    "/upload_photo",
+    responses={
+        400: {
+            "model": TokenErrorResponse,
+            "description": "Невалидный токен"
+        }
+    },
+    response_model=ViewCarSchema
+    )
+def upload_car_photo(
+    data: UploadPhotoSchema,
+    session: Session = Depends(get_session)
+    ):
+    repository = CarsRepository(session=session)
+    service = CarsService(repository=repository)
+    car = service.upload_car_photo(vin=data.vin, photo=data.photo)
+    return car

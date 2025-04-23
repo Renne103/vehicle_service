@@ -1,6 +1,6 @@
 from vehicle.repositories.cars import CarsRepository
 from vehicle.repositories.users import UserRepository
-from vehicle.schemas.cars import UsersCarsSchema
+from vehicle.schemas.cars import UsersCarsSchema, ViewCarSchema
 from vehicle.utils.exeptions import CustomValidationError
 
 
@@ -22,3 +22,6 @@ class CarsService:
             session=self.repository.session
             ).get_user_id_from_username(username=username)
         return self.repository.add_car(user_id=user_id, data=data, username=username)
+
+    def upload_car_photo(self, vin: str, photo: str) -> ViewCarSchema:
+        return self.repository.upload_car_photo(vin=vin, photo=photo)
