@@ -47,7 +47,7 @@ def seed_data():
                 model=f"Civic {i}",
                 brand="Honda",
                 user_id=user1.id,
-                year_of_release=date(2010 + i % 10, 1, 1),
+                year_of_release=2010 + i % 10,
                 mileage=50000 + i * 1000,
                 plate_license=f"JD{i:03}",
                 photo=f"john_car_{i}.jpg"
@@ -57,7 +57,7 @@ def seed_data():
                 model=f"Caravan {i}",
                 brand="Dodge",
                 user_id=user2.id,
-                year_of_release=date(2012 + i % 10, 6, 15),
+                year_of_release=2012 + i % 10,
                 mileage=20000 + i * 1500,
                 plate_license=f"AS{i:03}",
                 photo=f"alice_car_{i}.jpg"

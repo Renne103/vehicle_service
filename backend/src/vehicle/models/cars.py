@@ -1,6 +1,5 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from datetime import date
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, ForeignKey, Numeric, CheckConstraint
@@ -19,7 +18,7 @@ class Cars(Base):
     model: Mapped[str] = mapped_column(String(128), nullable=False)
     brand: Mapped[str] = mapped_column(String(32), nullable=False)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-    year_of_release: Mapped[date] = mapped_column(nullable=True)
+    year_of_release: Mapped[int] = mapped_column(nullable=True)
     mileage: Mapped[int] = mapped_column(
         Numeric(precision=8, scale=0),
         CheckConstraint("mileage BETWEEN 0 AND 99999999"),
