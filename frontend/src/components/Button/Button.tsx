@@ -5,13 +5,19 @@ function Button({
   children,
   type,
   onClick,
+  className,
 }: {
   children: ReactNode;
   type?: "submit" | "reset" | "button" | undefined;
   onClick?: () => void;
+  className?: string;
 }) {
   return (
-    <button className={styles.btn} type={type} onClick={onClick}>
+    <button
+      className={`${styles.btn} ${className}`}
+      type={type}
+      onClick={onClick}
+    >
       {children}
     </button>
   );

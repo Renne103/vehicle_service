@@ -1,4 +1,4 @@
-import { RegisterOptions, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import styles from "./Input.module.scss";
 

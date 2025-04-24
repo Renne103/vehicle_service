@@ -1,0 +1,26 @@
+.card{
+	padding: 16px;
+	background-color: white;
+	border-radius: 16px;
+	display: flex;
+	justify-content: space-between;
+}
+.model{
+	color: #407CBD;
+	font-size: 18px;
+}
+.text_wrapper{
+	padding-top: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	span{
+		color: #7d7d7d;
+	}
+}
+.img{
+	background-color: #bbbaba;
+	height: 140px;
+	width: 140px;
+	border-radius: 16px;
+}
