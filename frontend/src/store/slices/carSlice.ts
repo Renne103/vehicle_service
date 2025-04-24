@@ -7,11 +7,13 @@ export interface Car {
   brand: string;
   year_of_release: string;
   mileage: number;
+  plate_license: string;
+  photo: string;
 }
 
 interface CarState {
   cars: Car[];
-  error: string | null;
+  error: Record<string, string>[] | null;
 }
 
 const initialState: CarState = {
@@ -21,7 +23,7 @@ const initialState: CarState = {
 
 export const fetchCars = createAsyncThunk('cars/fetchCars', async (_, thunkAPI) => {
   try {
-    const res = await axios.get('/cars/cars');
+    const res = await axios.get('/cars');
     return res.data as Car[];
   } catch (err: any) {
     return thunkAPI.rejectWithValue('Ошибка при получении машин');
@@ -32,10 +34,29 @@ export const addNewCar = createAsyncThunk(
   'cars/addNewCar',
   async (carData: Car, thunkAPI) => {
     try {
-      const res = await axios.post('/cars/new_car', carData);
+      const res = await axios.post('/cars', carData);
       return res.data;
     } catch (err: any) {
       return thunkAPI.rejectWithValue(err.response?.data?.detail || 'Ошибка при добавлении машины');
+    }
+  }
+);
+
+export const uploadCarPhoto = createAsyncThunk(
+  'cars/uploadCarPhoto',
+  async (photo: File, thunkAPI) => {
+    const formData = new FormData();
+    formData.append('photo', photo);
+
+    try {
+      const res = await axios.post('/docs/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return res.data;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue('Ошибка при загрузке фото');
     }
   }
 );
@@ -51,10 +72,18 @@ const carSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchCars.rejected, (state, action) => {
-        state.error = action.payload as string;
+        state.error = action.payload as Record<string, string>[];
       })
       .addCase(addNewCar.rejected, (state, action) => {
-        state.error = action.payload as string;
+        state.error = action.payload as Record<string, string>[];
+      })
+
+      .addCase(uploadCarPhoto.fulfilled, (state, action) => {
+        state.error = null;
+        console.log(action.payload);
+      })
+      .addCase(uploadCarPhoto.rejected, (state, action) => {
+        state.error = action.payload as Record<string, string>[];
       });
   },
 });
