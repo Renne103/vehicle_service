@@ -31,3 +31,24 @@ class CarsService:
                 input_value=vin
             )
         return self.repository.upload_car_photo(vin=vin, data=data)
+    
+    def get_car(self, vin: str, username: str) -> ViewCarSchema:
+        if not self.repository.exists_vin(vin=vin):
+            raise CustomValidationError.single(
+                msg="Такой VIN не существует",
+                input_name="vin",
+                input_value=vin
+            )
+        car = self.repository.get_car(vin=vin)
+        user_id = UserRepository(
+            session=self.repository.session
+            ).get_user_id_from_username(username=username)
+        if car.user_id != user_id:
+            raise CustomValidationError.single(
+                msg="Такой VIN не принадлежит данному пользователю",
+                input_name="vin",
+                input_value=vin
+            )
+        del car.user_id
+        car = ViewCarSchema.model_validate(car)
+        return car

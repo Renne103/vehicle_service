@@ -7,9 +7,9 @@ class UsersCarsSchema(BaseModel):
     vin: str
     model: str
     brand: str
-    year_of_release: date | None
+    year_of_release: date | None = None
     mileage: int
-    plate_license: str | None
+    plate_license: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -19,7 +19,13 @@ class NewCarSchema(UsersCarsSchema):
 
 
 class ViewCarSchema(UsersCarsSchema):
-    photo: str
+    photo: str | None = None
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UserCarSchema(ViewCarSchema):
+    user_id: int
     
     model_config = ConfigDict(from_attributes=True)
 

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
-from vehicle.schemas.cars import ChangeCarSchema, UsersCarsSchema, NewCarSchema, ViewCarSchema
+from vehicle.schemas.cars import ChangeCarSchema, UsersCarsSchema, NewCarSchema, ViewCarSchema, UserCarSchema
 from vehicle.models.cars import Cars
 from vehicle.models.users import User
 
@@ -48,3 +48,8 @@ class CarsRepository:
         self.session.commit()
         self.session.refresh(car)
         return ViewCarSchema.model_validate(car)
+    
+    def get_car(self, vin: str) -> UserCarSchema:
+        stmt = select(Cars).where(Cars.vin == vin)
+        car = self.session.execute(stmt).scalar_one()
+        return UserCarSchema.model_validate(car)
