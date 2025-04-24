@@ -1,13 +1,12 @@
-from fastapi import APIRouter, Depends, status
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Depends, status, Body
 from sqlalchemy.orm import Session
 
 from vehicle.utils.auth import get_current_username
 from vehicle.repositories.cars import CarsRepository
 from vehicle.services.cars import CarsService
 from vehicle.database.sessions import get_session
-from vehicle.schemas.cars import NewCarSchema, ViewCarSchema, UploadPhotoSchema
-from vehicle.schemas.exeptions import TokenErrorResponse
+from vehicle.schemas.cars import NewCarSchema, ViewCarSchema, ChangeCarSchema
+from vehicle.schemas.exeptions import TokenErrorResponse, ErrorDetailSchema
 
 
 router = APIRouter(
@@ -58,20 +57,25 @@ def add_car(
 
 
 @router.patch(
-    "/",
+    "/{vin}",
     responses={
         400: {
             "model": TokenErrorResponse,
             "description": "Невалидный токен"
+        },
+        406: {
+            "model": ErrorDetailSchema,
+            "description": "Ошибка валидации пользовательских данных"
         }
     },
     response_model=ViewCarSchema
     )
-def upload_car_photo(
-    data: UploadPhotoSchema,
+def change_car(
+    vin: str,
+    data: ChangeCarSchema = Body(...),
     session: Session = Depends(get_session)
     ):
     repository = CarsRepository(session=session)
     service = CarsService(repository=repository)
-    car = service.upload_car_photo(vin=data.vin, photo=data.photo)
+    car = service.upload_car_photo(vin=vin, data=data)
     return car

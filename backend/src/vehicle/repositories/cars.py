@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
-from vehicle.schemas.cars import UsersCarsSchema, NewCarSchema, ViewCarSchema
+from vehicle.schemas.cars import ChangeCarSchema, UsersCarsSchema, NewCarSchema, ViewCarSchema
 from vehicle.models.cars import Cars
 from vehicle.models.users import User
 
@@ -38,10 +38,13 @@ class CarsRepository:
         stmt = select(Cars.vin).where(Cars.vin == vin)
         return self.session.execute(stmt).scalar_one_or_none() is not None
     
-    def upload_car_photo(self, vin: str, photo: str) -> ViewCarSchema:
+    def upload_car_photo(self, vin: str, data: ChangeCarSchema) -> ViewCarSchema:
         stmt = select(Cars).where(Cars.vin == vin)
-        car = self.session.execute(stmt).scalar_one_or_none()
-        car.photo = photo
+        car = self.session.execute(stmt).scalar_one()
+        update_data = data.model_dump(exclude_unset=True)
+        for key, value in update_data.items():
+            setattr(car, key, value)
+        self.session.add(car)
         self.session.commit()
         self.session.refresh(car)
         return ViewCarSchema.model_validate(car)

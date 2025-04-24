@@ -28,5 +28,10 @@ class PhotoSchema(BaseModel):
     photo: str
 
 
-class UploadPhotoSchema(PhotoSchema):
-    vin: str
+class ChangeCarSchema(BaseModel):
+    model: str | None = None
+    brand: str | None = None
+    year_of_release: date | None = None
+    mileage: int | None = None
+    plate_license: str | None = None
+    photo: str | None = None
