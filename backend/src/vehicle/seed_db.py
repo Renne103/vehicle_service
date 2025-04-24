@@ -6,6 +6,7 @@ from vehicle.database.base import Base
 from vehicle.models.users import User, TokenBlackList
 from vehicle.models.cars import Cars
 from vehicle.configs.db_config import settings
+from vehicle.utils.auth import get_hashed_password
 
 DATABASE_URL = settings.get_db_url
 
@@ -24,7 +25,7 @@ def seed_data():
         user1 = User(
             username="john_doe",
             tg="@john",
-            password="hashedpassword1",
+            password=get_hashed_password('hashedpassword1'),
             first_name="John",
             last_name="Doe",
         )
@@ -32,7 +33,7 @@ def seed_data():
         user2 = User(
             username="alice_smith",
             tg="@alice",
-            password="hashedpassword2",
+            password=get_hashed_password("hashedpassword2"),
             first_name="Alice",
             last_name="Smith",
         )
