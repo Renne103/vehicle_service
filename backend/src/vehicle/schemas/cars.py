@@ -21,7 +21,7 @@ class UsersCarsSchema(BaseModel):
 
 
 class NewCarSchema(UsersCarsSchema):
-    pass
+    photo: str | None = None
 
 
 class ViewCarSchema(UsersCarsSchema):

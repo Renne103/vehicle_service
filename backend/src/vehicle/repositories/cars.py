@@ -25,7 +25,7 @@ class CarsRepository:
             .where(User.username == username)
         )
         result = self.session.execute(stmt).mappings().all()
-        return [UsersCarsSchema.model_validate(car) for car in result]
+        return [NewCarSchema.model_validate(car) for car in result]
     
     def add_car(self, user_id: int, data: NewCarSchema, username: str) -> list[ViewCarSchema]:
         new_car = Cars(**data.model_dump(), user_id=user_id)

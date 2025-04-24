@@ -1,6 +1,6 @@
 from vehicle.repositories.cars import CarsRepository
 from vehicle.repositories.users import UserRepository
-from vehicle.schemas.cars import UsersCarsSchema, ViewCarSchema, ChangeCarSchema
+from vehicle.schemas.cars import NewCarSchema, UsersCarsSchema, ViewCarSchema, ChangeCarSchema
 from vehicle.utils.exeptions import CustomValidationError
 
 
@@ -11,7 +11,7 @@ class CarsService:
     def get_users_cars(self, username: str) -> list[ViewCarSchema]:
         return self.repository.get_users_cars(username=username)
 
-    def add_car(self, username: str, data: UsersCarsSchema) -> list[ViewCarSchema]:
+    def add_car(self, username: str, data: NewCarSchema) -> list[ViewCarSchema]:
         if self.repository.exists_vin(vin=data.vin):
             raise CustomValidationError.single(
                 msg="Такой VIN уже существует",
