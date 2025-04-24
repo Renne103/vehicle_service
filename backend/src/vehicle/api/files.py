@@ -16,12 +16,12 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
 router = APIRouter(
-    prefix="/api/files"
+    prefix="/api/docs"
 )
 
 
 @router.post(
-    "/cars/upload",
+    "/",
     dependencies=[Depends(get_current_username)],
     response_model=PhotoSchema
 )
@@ -38,7 +38,7 @@ def upload_car_photo(photo: UploadFile = File(...)):
     return dict(photo=file_path)
 
 
-@router.get("/get-photo/{filepath:path}")
+@router.get("/{filepath:path}")
 def get_photo(filepath: str):
     file_path = Path(filepath).resolve()
     print(file_path)

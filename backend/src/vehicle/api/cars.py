@@ -17,7 +17,7 @@ router = APIRouter(
 
 
 @router.get(
-    "/cars",
+    "/",
     response_model=list[ViewCarSchema],
     responses={
         400: {
@@ -36,7 +36,7 @@ def get_cars(
 
 
 @router.post(
-    "/new_car",
+    "/",
     responses={
         400: {
             "model": TokenErrorResponse,
@@ -57,8 +57,8 @@ def add_car(
     return cars
 
 
-@router.post(
-    "/upload_photo",
+@router.patch(
+    "/",
     responses={
         400: {
             "model": TokenErrorResponse,
