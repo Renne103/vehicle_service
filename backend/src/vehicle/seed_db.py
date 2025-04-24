@@ -50,7 +50,6 @@ def seed_data():
                 year_of_release=2010 + i % 10,
                 mileage=50000 + i * 1000,
                 plate_license=f"JD{i:03}",
-                photo=f"john_car_{i}.jpg"
             ))
             cars.append(Cars(
                 vin=f"2C4RDGBG8ER1{i:05}",
@@ -60,7 +59,6 @@ def seed_data():
                 year_of_release=2012 + i % 10,
                 mileage=20000 + i * 1500,
                 plate_license=f"AS{i:03}",
-                photo=f"alice_car_{i}.jpg"
             ))
 
         session.add_all(cars)
