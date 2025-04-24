@@ -7,12 +7,14 @@ import styles from "./AddVehiclePage.module.scss";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { PhotoInput } from "../../components/PhotoInput/PhotoInput";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddVehiclePage = () => {
   const methods = useForm<Car>();
-  const { handleSubmit, control, setError } = methods;
+  const { handleSubmit, control, setError, reset } = methods;
   const { error } = useAppSelector((state) => state.cars);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     error?.map((err) =>
@@ -24,6 +26,8 @@ const AddVehiclePage = () => {
     try {
       const response = await dispatch(addNewCar(data)).unwrap();
       console.log("Машина добавлена:", response);
+      reset();
+      navigate("/");
     } catch (error) {
       console.error("Ошибка при добавлении автомобиля:", error);
     }

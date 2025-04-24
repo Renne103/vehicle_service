@@ -26,7 +26,11 @@ function CarCard({ car }: { car: Car }) {
           </p>
         </div>
       </div>
-      <img src="" alt="" className={styles.img} />
+      {photo ? (
+        <img src={photo} alt="" className={styles.img} />
+      ) : (
+        <div className={styles.img}></div>
+      )}
     </div>
   );
 }
