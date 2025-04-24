@@ -9,7 +9,6 @@ from vehicle.configs.db_config import settings
 from vehicle.utils.auth import get_hashed_password
 
 DATABASE_URL = settings.get_db_url
-
 engine = create_engine(DATABASE_URL, echo=True)
 
 def seed_data():
@@ -38,29 +37,33 @@ def seed_data():
             last_name="Smith",
         )
 
-        car1 = Cars(
-            vin="1HGCM82633A004352",
-            model="Civic",
-            brand="Honda",
-            user=user1,
-            year_of_release=date(2015, 6, 1),
-            mileage=78000,
-            plate_license="ABC123",
-            photo="car1.jpg"
-        )
+        session.add_all([user1, user2])
+        session.flush()  # Чтобы user1.id и user2.id были доступны
 
-        car2 = Cars(
-            vin="2C4RDGBG8ER123456",
-            model="Grand Caravan",
-            brand="Dodge",
-            user=user2,
-            year_of_release=date(2020, 4, 15),
-            mileage=21000,
-            plate_license="XYZ789",
-            photo="car2.jpg"
-        )
+        cars = []
+        for i in range(10):
+            cars.append(Cars(
+                vin=f"1HGCM82633A0{i:05}",
+                model=f"Civic {i}",
+                brand="Honda",
+                user_id=user1.id,
+                year_of_release=date(2010 + i % 10, 1, 1),
+                mileage=50000 + i * 1000,
+                plate_license=f"JD{i:03}",
+                photo=f"john_car_{i}.jpg"
+            ))
+            cars.append(Cars(
+                vin=f"2C4RDGBG8ER1{i:05}",
+                model=f"Caravan {i}",
+                brand="Dodge",
+                user_id=user2.id,
+                year_of_release=date(2012 + i % 10, 6, 15),
+                mileage=20000 + i * 1500,
+                plate_license=f"AS{i:03}",
+                photo=f"alice_car_{i}.jpg"
+            ))
 
-        session.add_all([user1, user2, car1, car2])
+        session.add_all(cars)
         session.commit()
         print("✅ Сидирование завершено")
 
