@@ -8,10 +8,10 @@ class CarsService:
     def __init__(self, repository: CarsRepository) -> None:
         self.repository = repository
 
-    def get_users_cars(self, username: str) -> list[UsersCarsSchema]:
+    def get_users_cars(self, username: str) -> list[ViewCarSchema]:
         return self.repository.get_users_cars(username=username)
 
-    def add_car(self, username: str, data: UsersCarsSchema) -> list[UsersCarsSchema]:
+    def add_car(self, username: str, data: UsersCarsSchema) -> list[ViewCarSchema]:
         if self.repository.exists_vin(vin=data.vin):
             raise CustomValidationError.single(
                 msg="Такой VIN уже существует",
@@ -52,3 +52,23 @@ class CarsService:
         del car.user_id
         car = ViewCarSchema.model_validate(car)
         return car
+    
+    def delete_car(self, vin: str, username: str) -> list[ViewCarSchema]:
+        if not self.repository.exists_vin(vin=vin):
+            raise CustomValidationError.single(
+                msg="Такой VIN не существует",
+                input_name="vin",
+                input_value=vin
+            )
+        user_id = UserRepository(
+            session=self.repository.session
+            ).get_user_id_from_username(username=username)
+        car = self.repository.get_car(vin=vin)
+        if car.user_id != user_id:
+            raise CustomValidationError.single(
+                msg="Такой VIN не принадлежит данному пользователю",
+                input_name="vin",
+                input_value=vin
+            )
+        self.repository.delete_car(vin=vin)
+        return self.get_users_cars(username=username)

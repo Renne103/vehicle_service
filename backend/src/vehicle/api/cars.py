@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, status, Body
+from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 
 from vehicle.utils.auth import get_current_username
@@ -104,3 +105,28 @@ def get_car(
     service = CarsService(repository=repository)
     car = service.get_car(vin=vin, username=username)
     return car
+
+
+@router.delete(
+    "/{vin}",
+    responses={
+        400: {
+            "model": TokenErrorResponse,
+            "description": "Невалидный токен"
+        },
+        406: {
+            "model": ErrorDetailSchema,
+            "description": "Ошибка валидации пользовательских данных"
+        }
+    },
+    response_model=list[ViewCarSchema]
+)
+def delete_car(
+    vin: str,
+    session: Session = Depends(get_session),
+    username: str = Depends(get_current_username)
+    ):
+    repository = CarsRepository(session=session)
+    service = CarsService(repository=repository)
+    cars = service.delete_car(vin=vin, username=username)
+    return cars

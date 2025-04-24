@@ -10,7 +10,7 @@ class CarsRepository:
     def __init__(self, session: Session) -> None:
         self.session = session
     
-    def get_users_cars(self, username: str) -> list[UsersCarsSchema]:
+    def get_users_cars(self, username: str) -> list[ViewCarSchema]:
         stmt = (
             select(
                 Cars.brand,
@@ -27,7 +27,7 @@ class CarsRepository:
         result = self.session.execute(stmt).mappings().all()
         return [UsersCarsSchema.model_validate(car) for car in result]
     
-    def add_car(self, user_id: int, data: NewCarSchema, username: str) -> list[UsersCarsSchema]:
+    def add_car(self, user_id: int, data: NewCarSchema, username: str) -> list[ViewCarSchema]:
         new_car = Cars(**data.model_dump(), user_id=user_id)
         self.session.add(new_car)
         self.session.commit()
@@ -53,3 +53,10 @@ class CarsRepository:
         stmt = select(Cars).where(Cars.vin == vin)
         car = self.session.execute(stmt).scalar_one()
         return UserCarSchema.model_validate(car)
+
+    def delete_car(self, vin: str) -> None:
+        stmt = select(Cars).where(Cars.vin == vin)
+        car = self.session.execute(stmt).scalar_one()
+        self.session.delete(car)
+        self.session.commit()
+    
