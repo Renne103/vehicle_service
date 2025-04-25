@@ -16,7 +16,6 @@ export const PhotoInput: React.FC<PhotoUploadProps> = ({
   name,
   control,
   label = "Фотография",
-  uploadUrl = "/api/docs", // Указываем URL для загрузки фото
 }) => {
   const [preview, setPreview] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -24,7 +23,7 @@ export const PhotoInput: React.FC<PhotoUploadProps> = ({
 
   const dispatch = useAppDispatch(); // Подключаем dispatch для отправки данных в Redux
   const {
-    field: { onChange, value },
+    field: { onChange },
     fieldState: { error },
   } = useController({
     name,
