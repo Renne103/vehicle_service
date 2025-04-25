@@ -12,7 +12,7 @@ function Step({ type, step }: { type: "one" | "two" | "three"; step: number }) {
       subtitle = "VIN, год, марка и модель";
       break;
     case "two":
-      title = "Отслеживай история проделанных ремонтных работ";
+      title = "Отслеживай историю проделанных ремонтных работ";
       subtitle = "С прикреплением чеков и актов";
       break;
     case "three":
