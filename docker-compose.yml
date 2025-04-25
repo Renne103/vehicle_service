@@ -1,22 +1,23 @@
 services:
-  nginx:
-    image: nginx:stable-alpine
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - photo_storage:/app/photo
-    depends_on:
-      - backend
-    restart: always
+  # nginx:
+  #   image: nginx:stable-alpine
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - photo_storage:/app/photo
+  #   depends_on:
+  #     - backend
+  #     - frontend
+  #   restart: always
 
   backend:
-    build: .
+    build: ./backend/
     command: sh -c "alembic upgrade head && python seed_db.py && python main.py"
     ports:
       - 8000:8000
     volumes:
-      - ./src/vehicle/:/app/src/vehicle/
+      - ./backend/src/vehicle/:/app/src/vehicle/
       - photo_storage:/app/src/vehicle/photos/cars
     env_file:
       - .env
@@ -38,6 +39,17 @@ services:
       - .env
     volumes:
       - vehicle_db:/var/lib/postgres/data
+  
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - 80:80
+    volumes:
+      - ./frontend/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - photo_storage:/app/photo
+    restart: always
 
 volumes:
   vehicle_db:
