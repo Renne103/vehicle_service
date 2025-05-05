@@ -7,8 +7,9 @@ from alembic import context
 
 from vehicle.configs.db_config import settings
 from vehicle.database.base import Base
-from vehicle.models.users import User
+from vehicle.models.users import User, TokenBlackList
 from vehicle.models.cars import Cars
+from vehicle.models.maintenances import Maintenances
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

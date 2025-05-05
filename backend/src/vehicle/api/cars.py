@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, status, Body
-from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 
 from vehicle.utils.auth import get_current_username

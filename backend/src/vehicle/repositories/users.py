@@ -1,4 +1,4 @@
-from sqlalchemy import insert, select, exists
+from sqlalchemy import select, exists
 from sqlalchemy.orm import Session
 
 from vehicle.schemas.users import RegisterSchema

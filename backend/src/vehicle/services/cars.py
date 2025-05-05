@@ -1,6 +1,6 @@
 from vehicle.repositories.cars import CarsRepository
 from vehicle.repositories.users import UserRepository
-from vehicle.schemas.cars import NewCarSchema, UsersCarsSchema, ViewCarSchema, ChangeCarSchema
+from vehicle.schemas.cars import NewCarSchema, ViewCarSchema, ChangeCarSchema
 from vehicle.utils.exeptions import CustomValidationError
 
 

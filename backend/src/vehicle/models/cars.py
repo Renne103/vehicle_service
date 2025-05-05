@@ -9,6 +9,7 @@ from vehicle.database.base import Base
 
 if TYPE_CHECKING:
     from .users import User
+    from .maintenances import Maintenances
 
 
 class Cars(Base):
@@ -28,3 +29,8 @@ class Cars(Base):
     photo: Mapped[str] = mapped_column(String(256), nullable=True)
     
     user: Mapped["User"] = relationship(back_populates="cars")
+    maintenances: Mapped[list["Maintenances"]] = relationship(
+        "Maintenances",
+        back_populates="car",
+        cascade="all, delete-orphan"
+        )
