@@ -9,7 +9,7 @@ import CarCard from "../../components/CarCard/CarCard";
 
 function HomePage() {
   const dispatch = useAppDispatch();
-  const { cars, error } = useAppSelector((state) => state.cars);
+  const { cars } = useAppSelector((state) => state.cars);
 
   useEffect(() => {
     dispatch(fetchCars()); // Получаем список машин

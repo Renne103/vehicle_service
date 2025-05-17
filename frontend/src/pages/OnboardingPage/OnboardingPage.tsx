@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import styles from "./Onboarding.module.scss";
 import Button from "../../components/Button/Button";
+import next from "../../assets/next.svg";
 
 function Step({ type, step }: { type: "one" | "two" | "three"; step: number }) {
   let title = "",
@@ -11,7 +12,7 @@ function Step({ type, step }: { type: "one" | "two" | "three"; step: number }) {
       subtitle = "VIN, год, марка и модель";
       break;
     case "two":
-      title = "Отслеживай история проделанных ремонтных работ";
+      title = "Отслеживай историю проделанных ремонтных работ";
       subtitle = "С прикреплением чеков и актов";
       break;
     case "three":
@@ -52,11 +53,7 @@ function Step({ type, step }: { type: "one" | "two" | "three"; step: number }) {
               style={{ background: "none", border: "none" }}
               to={`/onboarding/${step + 1}`}
             >
-              <img
-                src="/src/assets/next.svg"
-                alt="skip"
-                className={styles.skip_icon}
-              />
+              <img src={next} alt="skip" className={styles.skip_icon} />
             </Link>
           </>
         )}

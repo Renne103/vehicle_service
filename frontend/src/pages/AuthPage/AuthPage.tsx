@@ -22,13 +22,7 @@ function AuthPage() {
   const [isRegister, setIsRegister] = useState(false);
 
   const methods = useForm<AuthFormData>();
-  const {
-    handleSubmit,
-    reset,
-    watch,
-    formState: { errors },
-    setError,
-  } = methods;
+  const { handleSubmit, reset, watch, setError } = methods;
 
   const onSubmit = (data: AuthFormData) => {
     if (isRegister) {
