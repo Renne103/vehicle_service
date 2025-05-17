@@ -1,8 +1,9 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, ForeignKey, Numeric, CheckConstraint
+from sqlalchemy import DateTime, String, ForeignKey, Numeric, CheckConstraint
 
 from vehicle.database.base import Base
 
@@ -33,4 +34,9 @@ class Cars(Base):
         "Maintenances",
         back_populates="car",
         cascade="all, delete-orphan"
+        )
+    date_of_create: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=datetime.now,
+        nullable=False
         )

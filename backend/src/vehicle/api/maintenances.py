@@ -8,7 +8,8 @@ from vehicle.repositories.maintenances import MaintenancesRepository
 from vehicle.schemas.maintenances import (
     GetMaintenanceSchema,
     CreateMaintenanceSchema,
-    GetAllMaintenancesSchema
+    GetAllMaintenancesSchema,
+    UpdateMaintenanceSchema
 )
 from vehicle.utils.auth import get_current_username
 
@@ -29,6 +30,7 @@ router = APIRouter(
         }
     },
     status_code=status.HTTP_201_CREATED,
+    response_model=list[GetAllMaintenancesSchema]
 )
 def create_maintenance(
     data: CreateMaintenanceSchema,
@@ -36,7 +38,8 @@ def create_maintenance(
     ):
     repository = MaintenancesRepository(session=session)
     service = MaintenancesService(repository=repository)
-    service.create_maintenances(data=data)
+    maintenances = service.create_maintenances(data=data)
+    return maintenances
 
 
 @router.get(
@@ -83,3 +86,52 @@ def get_one_maintenance(
     repository = MaintenancesRepository(session=session)
     service = MaintenancesService(repository=repository)
     return service.get_maintenance(id=id)
+
+
+@router.delete(
+    "/{id}",
+    responses={
+        400: {
+            "model": TokenErrorResponse,
+            "description": "Невалидный токен"
+        },
+        406: {
+            "model": ErrorDetailSchema,
+            "description": "Ошибка валидации пользовательских данных"
+        }
+    },
+    response_model=list[GetAllMaintenancesSchema]
+)
+def delete_maintenance(
+    id: int,
+    vin: str,
+    session: Session = Depends(get_session)
+    ):
+    repository = MaintenancesRepository(session=session)
+    service = MaintenancesService(repository=repository)
+    maintenances = service.delete_maintenance(id=id, vin=vin)
+    return maintenances
+
+
+@router.patch(
+    "/{id}",
+    responses={
+        400: {
+            "model": TokenErrorResponse,
+            "description": "Невалидный токен"
+        },
+        406: {
+            "model": ErrorDetailSchema,
+            "description": "Ошибка валидации пользовательских данных"
+        }
+    },
+    response_model=GetMaintenanceSchema
+)
+def update_maintenance(
+    id: int,
+    data: UpdateMaintenanceSchema,
+    session: Session = Depends(get_session)
+    ):
+    repository = MaintenancesRepository(session=session)
+    service = MaintenancesService(repository=repository)
+    return service.update_maintenance(id=id, data=data)

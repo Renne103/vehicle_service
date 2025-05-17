@@ -23,6 +23,7 @@ class CarsRepository:
                 )
             .join(Cars.user)
             .where(User.username == username)
+            .order_by(Cars.date_of_create.desc())
         )
         result = self.session.execute(stmt).mappings().all()
         return [NewCarSchema.model_validate(car) for car in result]

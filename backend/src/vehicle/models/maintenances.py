@@ -43,11 +43,13 @@ class Maintenances(Base):
     )
     cost: Mapped[int] = mapped_column(
         Numeric(precision=8, scale=0),
-        CheckConstraint("cost BETWEEN 0 AND 99999999"),  # Исправлено: было mileage вместо cost
+        CheckConstraint("cost BETWEEN 0 AND 99999999"),
         nullable=False
     )
     comments: Mapped[str] = mapped_column(nullable=True)
-    category_of_work: Mapped[MaintenanceCategory] = mapped_column(nullable=False)  # Использование Enum
-    documents: Mapped[list[str]] = mapped_column(ARRAY(String(512)), nullable=True)
+    category_of_work: Mapped[MaintenanceCategory] = mapped_column(nullable=False)
+    act_of_completed_works: Mapped[str] = mapped_column(String(512), nullable=True)
+    receipt: Mapped[str] = mapped_column(String(512), nullable=True)
+    warranty_card: Mapped[str] = mapped_column(String(512), nullable=True)
     
     car: Mapped["Cars"] = relationship(back_populates="maintenances")
