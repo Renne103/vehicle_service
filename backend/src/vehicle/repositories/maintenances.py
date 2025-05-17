@@ -47,7 +47,7 @@ class MaintenancesRepository:
             Maintenances
             ).where(Maintenances.car_vin == vin).order_by(Maintenances.date.desc())
         try:
-            maintenances = self.session.execute(stmt).mappings().all()
+            maintenances = self.session.execute(stmt).scalars().all()
             return [GetAllMaintenancesSchema.model_validate(maintenance) for maintenance in maintenances]
         except Exception as e:
             raise e
