@@ -1,11 +1,12 @@
 import { Car } from "../../store/slices/carSlice";
 import styles from "./CarCard.module.scss";
+import { Link } from "react-router-dom";
 
 function CarCard({ car }: { car: Car }) {
   const { vin, model, brand, year_of_release, mileage, plate_license, photo } =
     car;
   return (
-    <div className={styles.card}>
+    <Link to={`car/${vin}`} className={styles.card}>
       <div>
         <p className={styles.model}>Автомобиль {model}</p>
         <div className={styles.text_wrapper}>
@@ -31,7 +32,7 @@ function CarCard({ car }: { car: Car }) {
       ) : (
         <div className={styles.img}></div>
       )}
-    </div>
+    </Link>
   );
 }
 

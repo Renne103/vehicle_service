@@ -1,0 +1,43 @@
+.wrapper{
+	padding: 16px 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+.img{
+	width: 100%;
+	border-radius: 32px;
+}
+.info{
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+	&__title{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+.button{
+	padding: 4px 16px;
+	font-size: 14px;
+}
+.model{
+	color: #407CBD;
+	font-size: 24px;
+}
+.text_wrapper{
+	padding-top: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	font-size: 18px;
+	span{
+		color: #7d7d7d;
+	}
+}
+.maintenance{
+	&__wrapper{
+
+	}
+}
