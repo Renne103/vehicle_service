@@ -20,7 +20,7 @@ services:
       - ./backend/src/vehicle/:/app/src/vehicle/
       - photo_storage:/app/src/vehicle/photos/cars
     env_file:
-      - .env
+      - ./backend/.env
     depends_on:
       db:
        condition: service_healthy
