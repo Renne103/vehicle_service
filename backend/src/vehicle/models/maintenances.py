@@ -21,11 +21,11 @@ class Maintenances(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     car_vin: Mapped[str] = mapped_column(ForeignKey("cars.vin"), nullable=False)
     date: Mapped[datetime.date] = mapped_column(nullable=False)
-    probeg: Mapped[int] = mapped_column(
+    mileage: Mapped[int] = mapped_column(
         Numeric(precision=8, scale=0),
         CheckConstraint("mileage BETWEEN 0 AND 99999999"),
         nullable=False
-        ) #TODO перевод
+        )
     cost: Mapped[int] = mapped_column(
         Numeric(precision=8, scale=0),
         CheckConstraint("mileage BETWEEN 0 AND 99999999"),

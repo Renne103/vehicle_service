@@ -18,7 +18,7 @@ class MaintenancesRepository:
         maintenance = Maintenances(
             car_vin=data.car_vin,
             date=data.date,
-            probeg=data.probeg, #TODO перевод
+            mileage=data.mileage,
             cost=data.cost,
             comments=data.comments,
             category_of_work=data.category_of_work,

@@ -6,7 +6,7 @@ from pydantic import BaseModel, ConfigDict
 class CreateMaintenanceSchema(BaseModel):
     car_vin: str
     date: datetime.date
-    probeg: int #TODO перевод
+    mileage: int
     cost: int
     comments: str | None = None
     category_of_work: str
@@ -22,7 +22,7 @@ class GetMaintenanceSchema(CreateMaintenanceSchema):
 class GetAllMaintenancesSchema(BaseModel):
     id: int
     date: datetime.date
-    probeg: int #TODO перевод
+    mileage: int
     category_of_work: str
     
     model_config = ConfigDict(from_attributes=True)

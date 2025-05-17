@@ -17,7 +17,8 @@ from vehicle.schemas.exeptions import ValidationOrAuthorizationErrorResponse, To
 
 
 router = APIRouter(
-    prefix="/api/auth"
+    prefix="/api/auth",
+    tags=["auth"],
 )
 
 

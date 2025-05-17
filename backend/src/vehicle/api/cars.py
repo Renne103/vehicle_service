@@ -11,6 +11,7 @@ from vehicle.schemas.exeptions import TokenErrorResponse, ErrorDetailSchema
 
 router = APIRouter(
     prefix="/api/cars",
+    tags=["cars"],
     dependencies=[Depends(get_current_username)],
 )
 

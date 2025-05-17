@@ -15,7 +15,8 @@ from vehicle.utils.auth import get_current_username
 
 router = APIRouter(
     prefix="/api/maintenances",
-        dependencies=[Depends(get_current_username)],
+    tags=["maintenances"],
+    dependencies=[Depends(get_current_username)],
 )
 
 

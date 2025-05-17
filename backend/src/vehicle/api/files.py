@@ -15,6 +15,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 router = APIRouter(
     prefix="/api/documents",
+    tags=["documents"],
 )
 
 
