@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from vehicle.models.maintenances import Maintenances
@@ -12,7 +12,6 @@ from vehicle.schemas.maintenances import (
 class MaintenancesRepository:
     def __init__(self, session: Session):
         self.session = session
-    
     
     def create_maintenance(self, data: CreateMaintenanceSchema) -> None:
         maintenance = Maintenances(
@@ -40,7 +39,7 @@ class MaintenancesRepository:
         except Exception as e:
             raise e
     
-    def get_all_maintenances(self, vin: str) -> list[GetAllMaintenancesSchema]:
+    def get_all_maintenances(self, vin: str) -> list[GetAllMaintenancesSchema]: #TODO Сделать с фильтрами
         stmt = select(
             Maintenances.id,
             Maintenances.probeg,
@@ -49,9 +48,16 @@ class MaintenancesRepository:
             ).where(Maintenances.car_vin == vin)
         try:
             maintenances = self.session.execute(stmt).mappings().all()
-            print(maintenances)
             return [GetAllMaintenancesSchema.model_validate(maintenance) for maintenance in maintenances]
         except Exception as e:
             raise e
 
-    #TODO Сделать с фильтрами
+    def delete_maintenance(self, id: int) -> None:
+        stmt = delete(Maintenances).where(Maintenances.id == id)
+        try:
+            self.session.execute(stmt)
+            self.session.commit()
+        except Exception as e:
+            self.session.rollback()
+            raise e
+        return None
