@@ -14,7 +14,7 @@ UPLOAD_DIR = Path("photos/cars").resolve()
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 router = APIRouter(
-    prefix="/api/docs"
+    prefix="/api/documents",
 )
 
 
