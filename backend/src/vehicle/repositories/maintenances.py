@@ -44,10 +44,7 @@ class MaintenancesRepository:
     
     def get_all_maintenances(self, vin: str) -> list[GetAllMaintenancesSchema]:
         stmt = select(
-            Maintenances.id,
-            Maintenances.mileage,
-            Maintenances.date,
-            Maintenances.category_of_work
+            Maintenances
             ).where(Maintenances.car_vin == vin).order_by(Maintenances.date.desc())
         try:
             maintenances = self.session.execute(stmt).mappings().all()
