@@ -49,7 +49,7 @@ export const uploadCarPhoto = createAsyncThunk(
     formData.append('photo', photo);
 
     try {
-      const res = await axios.post('/docs/', formData, {
+      const res = await axios.post('/documents/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -60,6 +60,43 @@ export const uploadCarPhoto = createAsyncThunk(
     }
   }
 );
+
+export const updateCar = createAsyncThunk(
+  'cars/updateCar',
+  async ({ vin, updates }: { vin: string; updates: Partial<Car> }, thunkAPI) => {
+    try {
+      const res = await axios.patch(`/cars/${vin}`, updates);
+      return res.data;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue('Ошибка при обновлении машины');
+    }
+  }
+);
+
+export const getCarByVin = createAsyncThunk(
+  'cars/getCarByVin',
+  async (vin: string, thunkAPI) => {
+    try {
+      const res = await axios.get(`/cars/${vin}`);
+      return res.data as Car;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue('Ошибка при получении машины');
+    }
+  }
+);
+export const deleteCar = createAsyncThunk(
+  'cars/deleteCar',
+  async (vin: string, thunkAPI) => {
+    try {
+      await axios.delete(`/cars/${vin}`);
+      return vin; // возвращаем VIN для удаления из состояния
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue('Ошибка при удалении машины');
+    }
+  }
+);
+
+
 
 const carSlice = createSlice({
   name: 'cars',
@@ -84,7 +121,33 @@ const carSlice = createSlice({
       })
       .addCase(uploadCarPhoto.rejected, (state, action) => {
         state.error = action.payload as Record<string, string>[];
+      })
+
+      .addCase(updateCar.fulfilled, (state, action) => {
+        const index = state.cars.findIndex(car => car.vin === action.payload.vin);
+        if (index !== -1) {
+          state.cars[index] = action.payload;
+        }
+      })
+      .addCase(getCarByVin.fulfilled, (state, action) => {
+        const exists = state.cars.find(car => car.vin === action.payload.vin);
+        if (!exists) {
+          state.cars.push(action.payload);
+        }
+      })
+      .addCase(deleteCar.fulfilled, (state, action) => {
+        state.cars = state.cars.filter(car => car.vin !== action.payload);
+      })
+      .addCase(updateCar.rejected, (state, action) => {
+        state.error = [{ error: action.payload as string }];
+      })
+      .addCase(getCarByVin.rejected, (state, action) => {
+        state.error = [{ error: action.payload as string }];
+      })
+      .addCase(deleteCar.rejected, (state, action) => {
+        state.error = [{ error: action.payload as string }];
       });
+      
   },
 });
 

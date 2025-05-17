@@ -6,10 +6,11 @@ import {
 } from "react-router-dom";
 import OnboardingPage from "./pages/OnboardingPage/OnboardingPage";
 import HomePage from "./pages/HomePage/HomePage";
-import AddVehiclePage from "./pages/AddVehiclePage/AddVehiclePage";
+import AddCarPage from "./pages/CarFormPage/CarFormPage";
 import PrivateRoute from "./components/PrivateRoute";
 import "./App.scss";
 import AuthPage from "./pages/AuthPage/AuthPage";
+import CarPage from "./pages/CarPage/CarPage";
 
 function App() {
   return (
@@ -34,13 +35,37 @@ function App() {
           path="/add-car"
           element={
             <PrivateRoute>
-              <AddVehiclePage />
+              <AddCarPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/add-car"
+          element={
+            <PrivateRoute>
+              <AddCarPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-car/:vin"
+          element={
+            <PrivateRoute>
+              <AddCarPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/car/:vin"
+          element={
+            <PrivateRoute>
+              <CarPage />
             </PrivateRoute>
           }
         />
 
         {/* Редирект по умолчанию */}
-        <Route path="*" element={<Navigate to="/onboarding" />} />
+        <Route path="*" element={<Navigate to="/onboarding/1" />} />
       </Routes>
     </Router>
   );
