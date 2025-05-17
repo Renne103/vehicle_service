@@ -23,12 +23,7 @@ class GetMaintenanceSchema(CreateMaintenanceSchema):
     model_config = ConfigDict(from_attributes=True)
 
 
-class GetAllMaintenancesSchema(BaseModel):
-    id: int
-    date: datetime.date
-    mileage: int = Field(..., ge=0, le=99_999_999)
-    category_of_work: MaintenanceCategory
-    
+class GetAllMaintenancesSchema(GetMaintenanceSchema):    
     model_config = ConfigDict(from_attributes=True)
 
 
