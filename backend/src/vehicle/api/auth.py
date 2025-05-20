@@ -12,7 +12,6 @@ from vehicle.repositories.users import UserRepository
 from vehicle.services.users import UserService
 from vehicle.database.sessions import get_session
 from vehicle.utils.auth import get_token_from_headers
-from vehicle.utils.exeptions import AuthorizationError, CustomValidationError
 from vehicle.schemas.exeptions import ValidationOrAuthorizationErrorResponse, TokenErrorResponse
 
 

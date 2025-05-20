@@ -6,7 +6,11 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from vehicle.api.routers import all_routers
-from vehicle.utils.exeptions import CustomValidationError, AuthorizationError
+from vehicle.utils.exeptions import (
+    CustomValidationError,
+    AuthorizationError,
+    PYDANTIC_VALIDATION_ERROR_TRANSLATIONS
+)
 
 
 origins = [
@@ -33,22 +37,26 @@ app.add_middleware(
 
 @app.exception_handler(RequestValidationError)
 def validation_exception_handler(request: Request, exc: RequestValidationError):
-    exeption_data = exc.errors()
-    exeption_out = []
-    for exeption in exeption_data:
-        location = exeption['loc'][-1]
-        message = exeption['msg'].split(", ")[-1]
-        exeption_out.append({
-            'msg': message,
-            'type': exeption['type'],
-            'input': exeption.get('input'),
+    exception_data = exc.errors()
+    exception_out = []
+    for exception in exception_data:
+        location = exception['loc'][-1]
+        translated_message = PYDANTIC_VALIDATION_ERROR_TRANSLATIONS.get(
+            exception['type'],
+            "Неизвестная ошибка валидации"
+        )
+        print(exception)
+        exception_out.append({
+            'msg': translated_message,
+            'type': exception['type'],
+            'input': exception.get('input'),
             'input_name': location
         })
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={
             'message': 'Ошибка валидации',
-            'detail': exeption_out
+            'detail': exception_out
         }
     )
 

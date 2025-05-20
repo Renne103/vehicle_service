@@ -1,3 +1,14 @@
+from vehicle.models.maintenances import MaintenanceCategory
+
+
+PYDANTIC_VALIDATION_ERROR_TRANSLATIONS = {
+    "greater_than_equal": "Значение должно быть больше или равно 0",
+    "less_than_equal": "Значение должно быть меньше или равно 99999999",
+    "enum": "Недопустимое значение работ",
+    "date_from_datetime_inexact": "Некорректный формат даты",
+}
+
+
 class AuthorizationError(Exception):
     def __init__(self, errors: list[dict]):
         self.errors = errors
