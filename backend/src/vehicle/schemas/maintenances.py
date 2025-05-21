@@ -1,6 +1,6 @@
 import datetime
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from vehicle.models.maintenances import MaintenanceCategory
 
@@ -15,6 +15,21 @@ class CreateMaintenanceSchema(BaseModel):
     act_of_completed_works: str | None = None
     receipt: str | None = None
     warranty_card: str | None = None
+    
+    @field_validator("date", mode="before")
+    @classmethod
+    def parse_date(cls, value):
+        if isinstance(value, str):
+            try:
+                return datetime.datetime.strptime(value, "%d.%m.%Y").date()
+            except ValueError:
+                raise ValueError("Дата должна быть в формате DD.MM.YYYY")
+        return value
+
+    class Config:
+        json_encoders = {
+            datetime.date: lambda v: v.strftime("%d.%m.%Y")
+        }
 
 
 class GetMaintenanceSchema(CreateMaintenanceSchema):
