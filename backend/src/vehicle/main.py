@@ -41,11 +41,13 @@ def validation_exception_handler(request: Request, exc: RequestValidationError):
     exception_out = []
     for exception in exception_data:
         location = exception['loc'][-1]
-        translated_message = PYDANTIC_VALIDATION_ERROR_TRANSLATIONS.get(
-            exception['type'],
-            "Неизвестная ошибка валидации"
-        )
-        print(exception)
+        if exception['type'] != 'value_error':
+            translated_message = PYDANTIC_VALIDATION_ERROR_TRANSLATIONS.get(
+                exception['type'],
+                "Неизвестная ошибка валидации"
+            )
+        else:
+            translated_message = exception['msg'].split(", ")[-1]
         exception_out.append({
             'msg': translated_message,
             'type': exception['type'],
