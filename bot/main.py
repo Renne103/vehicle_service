@@ -1,4 +1,4 @@
-from aiogram import dispatcher, Bot
+from aiogram import Dispatcher, Bot
 
 from .configs import settings
 from .middlewares import DatabaseMiddleware
@@ -6,7 +6,7 @@ from .handlers import router as main_router
 
 
 bot = Bot(token=settings.BOT_TOKEN)
-dp = dispatcher.Dispatcher(bot)
+dp = Dispatcher()
 dp.message.middleware(DatabaseMiddleware())
 dp.include_router(main_router)
 

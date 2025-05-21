@@ -18,9 +18,16 @@ class CarsService:
                 input_name="vin",
                 input_value=data.vin
             )
-        user_id = UserRepository(
-            session=self.repository.session
-            ).get_user_id_from_username(username=username)
+        try:
+            user_id = UserRepository(
+                session=self.repository.session
+                ).get_user_id_from_username(username=username)
+        except Exception as e:
+            raise CustomValidationError.single(
+                msg="Пользователь не найден",
+                input_name="username",
+                input_value=username
+            )
         return self.repository.add_car(user_id=user_id, data=data, username=username)
 
     def upload_car_photo(self, vin: str, data: ChangeCarSchema) -> ViewCarSchema:

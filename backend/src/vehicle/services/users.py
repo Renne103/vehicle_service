@@ -7,6 +7,7 @@ from vehicle.utils.auth import (
     decode_access_token
 )
 from vehicle.utils.exeptions import AuthorizationError, CustomValidationError
+from vehicle.utils.rabbit import send_user_registered
 
 
 class UserService:

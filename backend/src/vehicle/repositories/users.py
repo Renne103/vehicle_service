@@ -9,7 +9,7 @@ class UserRepository:
     def __init__(self, session: Session) -> None:
         self.session = session
         
-    def create_user(self, data: RegisterSchema) -> User:
+    def create_user(self, data: RegisterSchema) -> str:
         user = User(username=data.username, password=data.password, tg=data.tg)
         try:
             self.session.add(user)

@@ -22,23 +22,19 @@ services:
     env_file:
       - ./backend/.env
     depends_on:
-      db:
-       condition: service_healthy
+      - db
     restart: on-failure
 
   
   db:
     image: postgres:16
     restart: always
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
-      interval: 1s
-      timeout: 5s
-      retries: 10
     env_file:
-      - .env
+      - ./backend/.env
+    ports:
+      - 5432:5432
     volumes:
-      - vehicle_db:/var/lib/postgres/data
+      - vehicle_db:/var/lib/postgresql/data
   
   frontend:
     build: ./frontend
@@ -50,6 +46,17 @@ services:
       - ./frontend/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - photo_storage:/app/photo
     restart: always
+  
+  bot:
+    build: ./bot
+    command: python -m bot.main
+    env_file:
+      - ./bot/.env
+    depends_on:
+      - db
+    volumes:
+      - ./bot/logs:/app/logs
+    restart: on-failure
 
 volumes:
   vehicle_db:
