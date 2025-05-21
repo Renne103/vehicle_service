@@ -30,7 +30,7 @@ interface MaintenanceState {
   list: Maintenance[];
   current?: Maintenance;
   loading: boolean;
-  error: string | null;
+  error: Record<string, string>[] | null;
 }
 
 const initialState: MaintenanceState = {
@@ -42,11 +42,11 @@ const initialState: MaintenanceState = {
 
 export const fetchMaintenances = createAsyncThunk<
   Maintenance[],
-  void,
+  string,
   { rejectValue: string }
->('maintenance/fetchAll', async (_, thunkAPI) => {
+>('maintenance/fetchAll', async (vin, thunkAPI) => {
   try {
-    const res = await axios.get<Maintenance[]>('/maintenances/');
+    const res = await axios.get<Maintenance[]>(`/maintenances?vin=${vin}`);
     return res.data;
   } catch (err: any) {
     return thunkAPI.rejectWithValue('Ошибка при загрузке списка обслуживаний');
@@ -81,6 +81,40 @@ export const addNewMaintenance = createAsyncThunk<
   }
 });
 
+export const deleteMaintenance = createAsyncThunk<
+  { id: number },
+  { id: number; vin: string },
+  { rejectValue: string }
+>(
+  'maintenance/delete',
+  async ({ id, vin }, thunkAPI) => {
+    try {
+      await axios.delete(`/maintenances/${id}`, { params: { vin } });
+      return { id };
+    } catch {
+      return thunkAPI.rejectWithValue('Ошибка при удалении обслуживания');
+    }
+  }
+);
+
+export const updateMaintenance = createAsyncThunk<
+  Maintenance,
+  { id: number; updates: Partial<Maintenance> },
+  { rejectValue: string }
+>(
+  'maintenance/update',
+  async ({ id, updates }, thunkAPI) => {
+    try {
+      const res = await axios.patch<Maintenance>(`/maintenances/${id}`, updates);
+      return res.data;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.detail || 'Ошибка при обновлении обслуживания'
+      );
+    }
+  }
+);
+
 const maintenanceSlice = createSlice({
   name: 'maintenance',
   initialState,
@@ -102,7 +136,7 @@ const maintenanceSlice = createSlice({
       })
       .addCase(fetchMaintenances.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ?? 'Неизвестная ошибка';
+        state.error = action.payload as unknown as Record<string, string>[];
       })
       .addCase(fetchMaintenanceById.pending, (state) => {
         state.loading = true;
@@ -114,7 +148,7 @@ const maintenanceSlice = createSlice({
       })
       .addCase(fetchMaintenanceById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ?? 'Неизвестная ошибка';
+        state.error = action.payload as unknown as Record<string, string>[];
       })
       .addCase(addNewMaintenance.pending, (state) => {
         state.loading = true;
@@ -126,8 +160,39 @@ const maintenanceSlice = createSlice({
       })
       .addCase(addNewMaintenance.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ?? 'Неизвестная ошибка';
-      });
+        state.error = action.payload as unknown as Record<string, string>[];
+      })
+
+      .addCase(deleteMaintenance.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteMaintenance.fulfilled, (state, action) => {
+        state.list = state.list.filter(m => m.id !== action.payload.id);
+        if (state.current?.id === action.payload.id) {
+          state.current = undefined;
+        }
+        state.loading = false;
+      })
+      .addCase(deleteMaintenance.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as unknown as Record<string, string>[];
+      })
+
+      .addCase(updateMaintenance.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateMaintenance.fulfilled, (state, action: PayloadAction<Maintenance>) => {
+        const idx = state.list.findIndex(m => m.id === action.payload.id);
+        if (idx !== -1) state.list[idx] = action.payload;
+        if (state.current?.id === action.payload.id) state.current = action.payload;
+        state.loading = false;
+      })
+      .addCase(updateMaintenance.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as unknown as Record<string, string>[];
+      })
   },
 });
 

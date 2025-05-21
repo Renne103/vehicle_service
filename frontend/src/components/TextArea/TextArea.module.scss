@@ -1,0 +1,68 @@
+.textareaWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	position: relative;
+  
+	&_data {
+	  display: flex;
+	  flex-direction: column;
+	  gap: 5px;
+	  position: relative;
+	  width: fit-content;
+	}
+  }
+  
+  .title {
+	font-weight: 300;
+	font-size: 15px;
+	color: #959796;
+	text-align: start;
+  
+	&__wrapper {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	}
+  
+	&__required {
+	  color: #8e8e93;
+	  font-size: 16px;
+	  font-weight: 300;
+	}
+  }
+  
+  .field {
+	width: 100%;
+	font-size: 15px !important;
+	outline: none;
+	min-height: 120px;
+	border-radius: 10px;
+	border: 1px solid #cfd3d5;
+	padding: 10px 15px;
+	color: #2d3436;
+	resize: vertical;
+  
+	&:-internal-autofill-selected {
+	  color: white !important;
+	  background-color: white !important;
+	  appearance: none;
+	}
+  }
+  
+  .error {
+	color: rgba(255, 0, 0);
+	font-size: 14px !important;
+	text-align: end;
+	position: absolute;
+	right: 0;
+  }
+  
+  .line {
+	height: 1px;
+	width: 100%;
+	background-color: #aeaeb2;
+	position: absolute;
+	bottom: 0;
+  }
+  
