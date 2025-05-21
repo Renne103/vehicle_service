@@ -6,11 +6,12 @@ import {
 } from "react-router-dom";
 import OnboardingPage from "./pages/OnboardingPage/OnboardingPage";
 import HomePage from "./pages/HomePage/HomePage";
-import AddCarPage from "./pages/CarFormPage/CarFormPage";
+import CarFormPage from "./pages/CarFormPage/CarFormPage";
 import PrivateRoute from "./components/PrivateRoute";
 import "./App.scss";
 import AuthPage from "./pages/AuthPage/AuthPage";
 import CarPage from "./pages/CarPage/CarPage";
+import MaintenanceFormPage from "./pages/MaintenanceFormPage/MaintenanceFormPage";
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
           path="/add-car"
           element={
             <PrivateRoute>
-              <AddCarPage />
+              <CarFormPage />
             </PrivateRoute>
           }
         />
@@ -43,7 +44,7 @@ function App() {
           path="/add-car"
           element={
             <PrivateRoute>
-              <AddCarPage />
+              <CarFormPage />
             </PrivateRoute>
           }
         />
@@ -51,7 +52,7 @@ function App() {
           path="/edit-car/:vin"
           element={
             <PrivateRoute>
-              <AddCarPage />
+              <CarFormPage />
             </PrivateRoute>
           }
         />
@@ -60,6 +61,14 @@ function App() {
           element={
             <PrivateRoute>
               <CarPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/add-maintenance"
+          element={
+            <PrivateRoute>
+              <MaintenanceFormPage />
             </PrivateRoute>
           }
         />

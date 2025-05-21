@@ -1,0 +1,156 @@
+/* Global CSS for SelectInput */
+
+.select-input__wrapper {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.selectInput__control {
+  cursor: pointer;
+  border-radius: 10px !important;
+  min-height: 28px;
+  padding: 5px 8px 5px 16px;
+  border: 1px solid #CFD3D5;
+  display: flex;
+  align-items: center;
+}
+
+.selectInput__single-value {
+  margin: 0;
+}
+
+.selectInput__value-container {
+  margin: 0;
+  padding: 0;
+}
+
+.selectInput__value-container--has-value {
+  display: flex;
+  height: 20px;
+}
+
+.selectInput__input-container {
+  margin: 0;
+  padding: 0;
+}
+
+.selectInput__indicator-separator {
+  display: none;
+}
+
+.selectInput__indicator {
+  padding: 0;
+  color: #262626;
+}
+
+.selectInput__placeholder {
+  margin: 0;
+  color: #262626;
+  text-align: start;
+}
+
+.selectInput__menu {
+  margin: 0;
+  border-radius: 20px;
+  z-index: 1000;
+}
+
+.selectInput__menu-list {
+  border-radius: 20px;
+}
+
+.selectInput__option {
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: 400;
+  color: #959796;
+  cursor: pointer;
+  text-align: start;
+}
+
+.selectInput__option:hover,
+.selectInput__option--is-selected {
+  color: #EB7F1F;
+}
+
+.selectInput__option_custom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.selectInput__option_custom_dot {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+}
+
+.selectInput__option__icon {
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
+}
+
+.selectInput__clear-indicator {
+  display: none;
+}
+
+.selectInput__multi-value {
+  margin: 0;
+  padding: 4px 8px;
+  border-radius: 8px;
+  display: flex;
+  gap: 8px;
+  transition: 0.2s all;
+  background-color: #FFFFFF;
+}
+
+.selectInput__multi-value__label {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: center;
+}
+
+.selectInput__multi-value__remove {
+  font-size: 18px;
+  padding: 0;
+}
+
+.selectInput__items-wrapper {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.selectInput__item {
+  padding: 4px 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.selectInput__item__icon {
+  cursor: pointer;
+}
+
+.select-input__error,
+.selectInput__error {
+  color: #FF0000;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: end;
+  position: absolute;
+  right: 0;
+  bottom: -17px;
+}
+
+.select_invalid {
+  border: 1px solid #FF0000 !important;
+  border-radius: 10px !important;
+}

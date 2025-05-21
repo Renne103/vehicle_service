@@ -1,0 +1,17 @@
+.row{
+	display: flex;
+	padding: 12px 4px;
+	justify-content: space-between;
+}
+.expanded{
+	display: flex;
+	flex-direction: column;
+	padding: 12px 4px;
+	padding-top: 0px;
+}
+.text{
+	font-size: 18px;
+	span {
+		color: #7d7d7d;
+	}
+}
