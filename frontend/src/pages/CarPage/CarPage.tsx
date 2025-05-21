@@ -70,7 +70,7 @@ function CarPage() {
         <div className={styles.maintenance__wrapper}>
           <div className={styles.info__title}>
             <p className={styles.model}>Обслуживание</p>
-            <Link to={`/add-maintenance`}>
+            <Link to={`add-maintenance`}>
               <Button className={styles.button}>Добавить</Button>
             </Link>
           </div>

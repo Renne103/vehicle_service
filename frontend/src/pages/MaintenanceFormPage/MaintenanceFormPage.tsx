@@ -17,6 +17,7 @@ import styles from "./MaintenanceFormPage.module.scss";
 import Layout from "../../components/Layot";
 import Textarea from "../../components/TextArea/TextArea";
 import SelectInput from "../../components/SelectInput/SelectInput";
+import DocInput from "../../components/DocInput/DocInput";
 
 const MaintenanceFormPage = () => {
   const { vin: paramVin, id: paramId } = useParams<{
@@ -40,11 +41,18 @@ const MaintenanceFormPage = () => {
   }, [isEdit, paramId, dispatch]);
 
   useEffect(() => {
-    if (isEdit && current) reset(current);
+    if (isEdit && current)
+      // @ts-expect-error
+      reset({
+        ...current,
+        category_of_work: {
+          label: current.category_of_work,
+          value: current.category_of_work,
+        },
+      });
   }, [isEdit, current, reset]);
 
   useEffect(() => {
-    console.log(error);
     if (error) {
       error.forEach((err) =>
         setError(err.input_name as keyof Maintenance, { message: err.msg })
@@ -54,47 +62,33 @@ const MaintenanceFormPage = () => {
 
   const onSubmit = async (data: Maintenance) => {
     try {
-      if (isEdit && paramId)
+      const payload = {
+        ...data,
+        // @ts-ignore
+        category_of_work: data.category_of_work.value,
+        car_vin: paramVin!,
+      };
+      if (isEdit && paramId) {
         await dispatch(
-          updateMaintenance({ id: Number(paramId), updates: data })
+          updateMaintenance({ id: Number(paramId), updates: payload })
         ).unwrap();
-      else await dispatch(addNewMaintenance(data)).unwrap();
+      } else {
+        await dispatch(addNewMaintenance(payload)).unwrap();
+      }
       navigate(`/car/${data.car_vin}`);
     } catch {}
   };
 
-  const onDelete = async () => {
-    if (paramId) {
-      await dispatch(
-        deleteMaintenance({ id: Number(paramId), vin: paramVin! })
-      ).unwrap();
-      navigate(`/car/${paramVin}`);
-    }
-  };
-
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
     <Layout>
-      <Modal
-        isModalOpen={isOpen}
-        btnClose={
-          <Button type="button" onClick={() => setIsOpen(false)}>
-            Отмена
-          </Button>
-        }
-        btnSubmit={
-          <Button type="button" onClick={onDelete}>
-            Удалить
-          </Button>
-        }
-        closeHandler={() => setIsOpen(false)}
-        modalClassname={styles.modal}
-      >
-        <p className={styles.modalTitle}>Удалить обслуживание?</p>
-      </Modal>
-
       <div className={styles.wrapper}>
+        <Button
+          type="button"
+          onClick={() => navigate(-1)}
+          className={styles.back_btn}
+        >
+          Назад
+        </Button>
         <h1 className={styles.header}>
           {isEdit ? "Редактировать обслуживание" : "Добавить обслуживание"}
         </h1>
@@ -103,7 +97,7 @@ const MaintenanceFormPage = () => {
             <Input
               label="Дата"
               name="date"
-              placeholder="Введите дату"
+              placeholder="ГГГГ-ММ-ДД"
               isRequired
             />
             <Input
@@ -133,13 +127,13 @@ const MaintenanceFormPage = () => {
               }))}
               isRequired
             />
-
+            <DocInput
+              name="act_of_completed_works"
+              label="Фото акта принятия работ"
+            />
+            <DocInput name="receipt" label="Фото чека" />
+            <DocInput name="warranty_card" label="Фото гарантийного талона" />
             <div className={styles.btns}>
-              {isEdit && (
-                <Button type="button" onClick={() => setIsOpen(true)}>
-                  Удалить
-                </Button>
-              )}
               <Button type="submit">{isEdit ? "Сохранить" : "Добавить"}</Button>
             </div>
           </form>

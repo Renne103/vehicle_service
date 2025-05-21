@@ -65,7 +65,15 @@ function App() {
           }
         />
         <Route
-          path="/add-maintenance"
+          path="/car/:vin/add-maintenance"
+          element={
+            <PrivateRoute>
+              <MaintenanceFormPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/car/:vin/edit-maintenance/:id"
           element={
             <PrivateRoute>
               <MaintenanceFormPage />

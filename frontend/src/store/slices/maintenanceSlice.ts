@@ -24,6 +24,9 @@ export interface Maintenance {
   comments: string;
   category_of_work: CategoryOfWork;
   documents?: string[];
+  act_of_completed_works?: string;
+  receipt?: string;
+  warranty_card?: string;
 }
 
 interface MaintenanceState {
