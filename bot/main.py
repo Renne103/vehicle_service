@@ -1,18 +1,4 @@
-from aiogram import Dispatcher, Bot
-
-from .configs import settings
-from .middlewares import DatabaseMiddleware
-from .handlers import router as main_router
-
-
-bot = Bot(token=settings.BOT_TOKEN)
-dp = Dispatcher()
-dp.message.middleware(DatabaseMiddleware())
-dp.include_router(main_router)
-
-
-async def main():
-    await dp.start_polling(bot)
+from .loader import main
 
 
 if __name__ == "__main__":
