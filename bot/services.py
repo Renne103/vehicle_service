@@ -48,3 +48,12 @@ class UserService:
         )
         users = result.scalars().all()
         return users
+
+    async def get_users_with_cars_with_maintainance(self) -> list[User]:
+        result = await self.session.execute(
+            select(User).options(
+                selectinload(User.cars).selectinload(Cars.maintenance)
+            )
+        )
+        users = result.scalars().all()
+        return users
