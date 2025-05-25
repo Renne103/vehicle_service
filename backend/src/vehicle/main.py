@@ -14,7 +14,7 @@ from vehicle.utils.exeptions import (
 
 
 origins = [
-    '*'
+    'http://localhost:8080',
 ]
 
 app = FastAPI(
