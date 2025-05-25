@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import styles from "./Textarea.module.scss";
+import styles from "./TextArea.module.scss";
 
 interface TextareaProps {
   label?: string;

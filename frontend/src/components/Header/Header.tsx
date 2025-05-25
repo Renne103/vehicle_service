@@ -21,21 +21,21 @@ const Header = () => {
           Главная
         </Link>
         <Link
-          to="/section-2"
-          className={`${styles.link} ${
-            location.pathname === "/section-2" ? styles.active : ""
-          }`}
+          to="https://t.me/vehicle_service_97_bot?start=true"
+          target="_blank"
+          className={`${styles.link}`}
         >
-          Раздел 2
+          Получить ссылку на бота
         </Link>
-        <Link
-          to="/section-3"
-          className={`${styles.link} ${
-            location.pathname === "/section-3" ? styles.active : ""
-          }`}
+        <div
+          className={`${styles.link}`}
+          onClick={() => {
+            localStorage.removeItem("token");
+            window.location.reload();
+          }}
         >
-          Раздел 3
-        </Link>
+          Выход
+        </div>
       </nav>
     </header>
   );
