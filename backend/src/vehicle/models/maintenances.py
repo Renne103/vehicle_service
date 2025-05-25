@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 
 class MaintenanceCategory(str, Enum):
     ENGINE = "Двигатель и его компоненты"
+    OIL_CHANGE = "Замена масла и фильтров"
     TRANSMISSION = "Трансмиссия"
     SUSPENSION = "Подвеска и ходовая часть"
     BRAKES = "Тормозная система"
