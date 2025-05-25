@@ -97,7 +97,7 @@ const MaintenanceFormPage = () => {
             <Input
               label="Дата"
               name="date"
-              placeholder="ГГГГ-ММ-ДД"
+              placeholder="ДД-ММ-ГГГГ"
               isRequired
             />
             <Input

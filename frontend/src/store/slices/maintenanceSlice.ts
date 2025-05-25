@@ -13,6 +13,7 @@ export enum CategoryOfWork {
   AirConditioning = 'Система кондиционирования',
   Body = 'Кузовные работы',
   Other = 'Прочие работы',
+  Oil = 'Замена масла и фильтров'
 }
 
 export interface Maintenance {
