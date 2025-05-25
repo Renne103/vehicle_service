@@ -17,7 +17,7 @@ export const registerUser = createAsyncThunk(
   'auth/register',
   async ({ username, password, second_password, tg }: any, thunkAPI) => {
     try {
-      const res = await axios.post('/auth/register', {
+      const res = await axios.post('/auth/register/', {
         username,
         password,
         'second_password': second_password,
@@ -34,7 +34,7 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async ({ username, password }: any, thunkAPI) => {
     try {
-      const res = await axios.post('/auth/login', { username, password });
+      const res = await axios.post('/auth/login/', { username, password });
       localStorage.setItem('token', res.data.token);
       return res.data;
     } catch (err: any) {

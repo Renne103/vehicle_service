@@ -22,7 +22,7 @@ router = APIRouter(
 
 
 @router.post(
-    "/register",
+    "/register/",
     response_model=RegisterResponseSchema,
     responses={
         406: {
@@ -42,7 +42,7 @@ def register(data: RegisterSchema, session: Session = Depends(get_session)):
 
 
 @router.post(
-    '/login',
+    '/login/',
     response_model=LoginResponseSchema,
     responses={
         406: {
@@ -61,7 +61,7 @@ def login(data: LoginSchema, session: Session = Depends(get_session)):
 
 
 @router.get(
-    '/logout',
+    '/logout/',
     responses={
         400: {
             "model": TokenErrorResponse,

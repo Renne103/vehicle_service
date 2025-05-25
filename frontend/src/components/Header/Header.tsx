@@ -25,7 +25,7 @@ const Header = () => {
           target="_blank"
           className={`${styles.link}`}
         >
-          Получить ссылку на бота
+          Уведомления
         </Link>
         <div
           className={`${styles.link}`}

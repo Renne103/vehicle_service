@@ -34,11 +34,11 @@ def upload_car_photo(photo: UploadFile = File(...)):
     file_path = os.path.join(UPLOAD_DIR, photo.filename)
     with open(file_path, "wb") as f:
         f.write(content)
-    file_path = f"http://localhost/photo/{photo.filename}"
+    file_path = f"http://31.31.207.12:8080/photo/{photo.filename}"
     return dict(photo=file_path)
 
 
-@router.get("/{filepath:path}")
+@router.get("/{filepath:path}/")
 def get_photo(filepath: str):
     file_path = Path(filepath).resolve()
     if not str(file_path).startswith(str(UPLOAD_DIR)) or not file_path.is_file():
