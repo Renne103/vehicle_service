@@ -9,6 +9,7 @@ import {
   addNewCar,
   deleteCar,
   getCarByVin,
+  resetErrors,
   updateCar,
 } from "../../store/slices/carSlice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
@@ -58,6 +59,7 @@ const CarFormPage = () => {
         await dispatch(addNewCar(data)).unwrap();
       }
       navigate(`/car/${data.vin}`);
+      dispatch(resetErrors(null));
     } catch {
       //
     }
@@ -91,7 +93,7 @@ const CarFormPage = () => {
       modalClassname={styles.modal}
     >
       <p style={{ textAlign: "center", fontWeight: "bold", fontSize: "20px" }}>
-        Удалить обслуживание?
+        Удалить сведения об автомобиле?
       </p>
     </Modal>
   );

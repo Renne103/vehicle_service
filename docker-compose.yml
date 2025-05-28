@@ -1,6 +1,9 @@
 services:
   backend:
-    build: ./backend/
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+      target: prod
     command: sh -c "alembic upgrade head && python seed_db.py && python main.py"
     ports:
       - 8000:8000
@@ -12,6 +15,16 @@ services:
     depends_on:
       - db
     restart: on-failure
+  
+
+  tests:
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+      target: test          # <-- важный момент
+    env_file:
+      - ./backend/.env
+    command: pytest tests -v --disable-warnings
 
   
   db:

@@ -1,4 +1,4 @@
-FROM python:3.12.7
+FROM python:3.12.7 as base
 
 RUN curl -sSL https://install.python-poetry.org | python -
 
@@ -14,6 +14,18 @@ COPY ./src/poetry.lock ./src/pyproject.toml /app/src/
 WORKDIR /app/src/
 
 RUN poetry install --no-root
+
+# =================== Стадия тестов ===================
+FROM base as test
+
+COPY ./src/ /app/src/
+
+WORKDIR /app/src/
+
+CMD ["pytest", "tests", "-v", "--disable-warnings"]
+
+# =================== Прод-стадия (основная) ===================
+FROM base as prod
 
 COPY ./src/vehicle/ /app/src/vehicle/
 

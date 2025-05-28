@@ -33,6 +33,13 @@ class UsersCarsSchema(BaseModel):
             raise ValueError("Некорректно указан год выпуска")
         return int(v)
 
+    @field_validator("vin")
+    def validate_vin(cls, v):
+        if len(v) != 17:
+            raise ValueError("Некорректно указан VIN")
+        return v
+
+
 class NewCarSchema(UsersCarsSchema):
     photo: str | None = None
     
