@@ -130,7 +130,7 @@ const CarFormPage = () => {
             />
             <Input
               label="Пробег"
-              placeholder="Введите пробег"
+              placeholder="Введите текущий пробег в км"
               name="mileage"
               isRequired
             />
