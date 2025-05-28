@@ -101,7 +101,11 @@ export const deleteCar = createAsyncThunk(
 const carSlice = createSlice({
   name: 'cars',
   initialState,
-  reducers: {},
+  reducers: {
+    resetErrors(state, action) {
+      state.error = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCars.fulfilled, (state, action) => {
@@ -152,3 +156,4 @@ const carSlice = createSlice({
 });
 
 export default carSlice.reducer;
+export const { resetErrors } = carSlice.actions;
