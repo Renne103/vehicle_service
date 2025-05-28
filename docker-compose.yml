@@ -35,16 +35,16 @@ services:
       - photo_storage:/app/photo
     restart: always
   
-  bot:
-    build: ./bot
-    command: python -m bot.main
-    env_file:
-      - ./bot/.env
-    depends_on:
-      - db
-    volumes:
-      - ./bot/logs:/app/logs
-    restart: on-failure
+  # bot:
+  #   build: ./bot
+  #   command: python -m bot.main
+  #   env_file:
+  #     - ./bot/.env
+  #   depends_on:
+  #     - db
+  #   volumes:
+  #     - ./bot/logs:/app/logs
+  #   restart: on-failure
 
 volumes:
   vehicle_db:

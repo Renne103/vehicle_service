@@ -8,16 +8,24 @@ class UsersCarsSchema(BaseModel):
     model: str
     brand: str
     year_of_release: str | int | None = None
-    mileage: int
+    mileage: str | int
     plate_license: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
+    
+    @field_validator("mileage")
+    def validate_mileage(cls, v):
+        try:
+            int(v)
+        except:
+            raise ValueError("Некорректно указан пробег")
+        return v
     
     @field_validator("year_of_release")
     def validate_year_of_release(cls, v):
         try:
             v = int(v)
-        except ValueError:
+        except:
             raise ValueError("Некорректно указан год выпуска")
         if v is None:
             raise ValueError("Некорректно указан год выпуска")
@@ -56,10 +64,18 @@ class PhotoSchema(BaseModel):
 class ChangeCarSchema(BaseModel):
     model: str | None = None
     brand: str | None = None
-    year_of_release: int | None = None
-    mileage: int | None = None
+    year_of_release: str | int | None = None
+    mileage: str | int | None = None
     plate_license: str | None = None
     photo: str | None = None
+    
+    @field_validator("mileage")
+    def validate_mileage(cls, v):
+        try:
+            int(v)
+        except:
+            raise ValueError("Некорректно указан пробег")
+        return v
     
     @field_validator("year_of_release")
     def validate_year_of_release(cls, v):
