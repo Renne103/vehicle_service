@@ -66,7 +66,7 @@ def get_all_maintenances(
 
 
 @router.get(
-    "/{id}",
+    "/{id}/",
     responses={
         400: {
             "model": TokenErrorResponse,
@@ -89,7 +89,7 @@ def get_one_maintenance(
 
 
 @router.delete(
-    "/{id}",
+    "/{id}/",
     responses={
         400: {
             "model": TokenErrorResponse,
@@ -114,7 +114,7 @@ def delete_maintenance(
 
 
 @router.patch(
-    "/{id}",
+    "/{id}/",
     responses={
         400: {
             "model": TokenErrorResponse,

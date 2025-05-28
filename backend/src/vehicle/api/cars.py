@@ -44,7 +44,7 @@ def get_cars(
         }
     },
     status_code=status.HTTP_201_CREATED,
-    response_model=list[NewCarSchema]
+    response_model=list[ViewCarSchema]
     )
 def add_car(
     new_car: NewCarSchema,
@@ -58,7 +58,7 @@ def add_car(
 
 
 @router.patch(
-    "/{vin}",
+    "/{vin}/",
     responses={
         400: {
             "model": TokenErrorResponse,
@@ -83,7 +83,7 @@ def change_car(
 
 
 @router.get(
-    "/{vin}",
+    "/{vin}/",
     responses={
         400: {
             "model": TokenErrorResponse,
@@ -108,7 +108,7 @@ def get_car(
 
 
 @router.delete(
-    "/{vin}",
+    "/{vin}/",
     responses={
         400: {
             "model": TokenErrorResponse,

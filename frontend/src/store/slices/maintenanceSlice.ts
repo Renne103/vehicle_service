@@ -50,7 +50,7 @@ export const fetchMaintenances = createAsyncThunk<
   { rejectValue: string }
 >('maintenance/fetchAll', async (vin, thunkAPI) => {
   try {
-    const res = await axios.get<Maintenance[]>(`/maintenances?vin=${vin}`);
+    const res = await axios.get<Maintenance[]>(`/maintenances/?vin=${vin}`);
     return res.data;
   } catch (err: any) {
     return thunkAPI.rejectWithValue('Ошибка при загрузке списка обслуживаний');
@@ -63,7 +63,7 @@ export const fetchMaintenanceById = createAsyncThunk<
   { rejectValue: string }
 >('maintenance/fetchById', async (id, thunkAPI) => {
   try {
-    const res = await axios.get<Maintenance>(`/maintenances/${id}`);
+    const res = await axios.get<Maintenance>(`/maintenances/${id}/`);
     return res.data;
   } catch (err: any) {
     return thunkAPI.rejectWithValue('Ошибка при загрузке данных обслуживания');
@@ -93,7 +93,7 @@ export const deleteMaintenance = createAsyncThunk<
   'maintenance/delete',
   async ({ id, vin }, thunkAPI) => {
     try {
-      await axios.delete(`/maintenances/${id}`, { params: { vin } });
+      await axios.delete(`/maintenances/${id}/`, { params: { vin } });
       return { id };
     } catch {
       return thunkAPI.rejectWithValue('Ошибка при удалении обслуживания');
@@ -109,7 +109,7 @@ export const updateMaintenance = createAsyncThunk<
   'maintenance/update',
   async ({ id, updates }, thunkAPI) => {
     try {
-      const res = await axios.patch<Maintenance>(`/maintenances/${id}`, updates);
+      const res = await axios.patch<Maintenance>(`/maintenances/${id}/`, updates);
       return res.data;
     } catch (err: any) {
       return thunkAPI.rejectWithValue(

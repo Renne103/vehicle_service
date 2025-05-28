@@ -14,7 +14,7 @@ from vehicle.utils.exeptions import (
 
 
 origins = [
-    '*'
+    '*',
 ]
 
 app = FastAPI(
@@ -23,7 +23,8 @@ app = FastAPI(
     version="0.0.1",
     docs_url="/api/docs",  # Меняем путь к Swagger UI
     redoc_url="/api/redoc",
-    openapi_url="/api/openapi.json"  # Путь к JSON-схеме
+    openapi_url="/api/openapi.json",  # Путь к JSON-схеме
+    redirect_slashes=False
 )
 
 app.add_middleware(

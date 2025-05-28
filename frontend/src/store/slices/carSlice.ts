@@ -23,7 +23,7 @@ const initialState: CarState = {
 
 export const fetchCars = createAsyncThunk('cars/fetchCars', async (_, thunkAPI) => {
   try {
-    const res = await axios.get('/cars');
+    const res = await axios.get('/cars/');
     return res.data as Car[];
   } catch (err: any) {
     return thunkAPI.rejectWithValue('Ошибка при получении машин');
@@ -34,7 +34,7 @@ export const addNewCar = createAsyncThunk(
   'cars/addNewCar',
   async (carData: Car, thunkAPI) => {
     try {
-      const res = await axios.post('/cars', carData);
+      const res = await axios.post('/cars/', carData);
       return res.data;
     } catch (err: any) {
       return thunkAPI.rejectWithValue(err.response?.data?.detail || 'Ошибка при добавлении машины');
@@ -65,7 +65,7 @@ export const updateCar = createAsyncThunk(
   'cars/updateCar',
   async ({ vin, updates }: { vin: string; updates: Partial<Car> }, thunkAPI) => {
     try {
-      const res = await axios.patch(`/cars/${vin}`, updates);
+      const res = await axios.patch(`/cars/${vin}/`, updates);
       return res.data;
     } catch (err: any) {
       return thunkAPI.rejectWithValue('Ошибка при обновлении машины');
@@ -77,7 +77,7 @@ export const getCarByVin = createAsyncThunk(
   'cars/getCarByVin',
   async (vin: string, thunkAPI) => {
     try {
-      const res = await axios.get(`/cars/${vin}`);
+      const res = await axios.get(`/cars/${vin}/`);
       return res.data as Car;
     } catch (err: any) {
       return thunkAPI.rejectWithValue('Ошибка при получении машины');
@@ -88,7 +88,7 @@ export const deleteCar = createAsyncThunk(
   'cars/deleteCar',
   async (vin: string, thunkAPI) => {
     try {
-      await axios.delete(`/cars/${vin}`);
+      await axios.delete(`/cars/${vin}/`);
       return vin; // возвращаем VIN для удаления из состояния
     } catch (err: any) {
       return thunkAPI.rejectWithValue('Ошибка при удалении машины');

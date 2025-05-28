@@ -7,17 +7,31 @@ class UsersCarsSchema(BaseModel):
     vin: str
     model: str
     brand: str
-    year_of_release: int | None = None
-    mileage: int
+    year_of_release: str | int | None = None
+    mileage: str | int
     plate_license: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
     
+    @field_validator("mileage")
+    def validate_mileage(cls, v):
+        try:
+            int(v)
+        except:
+            raise ValueError("Некорректно указан пробег")
+        return v
+    
     @field_validator("year_of_release")
     def validate_year_of_release(cls, v):
+        try:
+            v = int(v)
+        except:
+            raise ValueError("Некорректно указан год выпуска")
+        if v is None:
+            raise ValueError("Некорректно указан год выпуска")
         if v is not None and (v < 1900 or v > datetime.now().year):
             raise ValueError("Некорректно указан год выпуска")
-        return v
+        return int(v)
 
     @field_validator("vin")
     def validate_vin(cls, v):
@@ -28,6 +42,14 @@ class UsersCarsSchema(BaseModel):
 
 class NewCarSchema(UsersCarsSchema):
     photo: str | None = None
+    
+    model_config = ConfigDict(from_attributes=True)
+    
+    @field_validator("vin")
+    def validate_vin(cls, v):
+        if len(v) != 17:
+            raise ValueError("Некорректно указан VIN")
+        return v
 
 
 class ViewCarSchema(UsersCarsSchema):
@@ -49,13 +71,25 @@ class PhotoSchema(BaseModel):
 class ChangeCarSchema(BaseModel):
     model: str | None = None
     brand: str | None = None
-    year_of_release: int | None = None
-    mileage: int | None = None
+    year_of_release: str | int | None = None
+    mileage: str | int | None = None
     plate_license: str | None = None
     photo: str | None = None
     
+    @field_validator("mileage")
+    def validate_mileage(cls, v):
+        try:
+            int(v)
+        except:
+            raise ValueError("Некорректно указан пробег")
+        return v
+    
     @field_validator("year_of_release")
     def validate_year_of_release(cls, v):
-        if v is not None and v < 1900 or v > int(datetime.now().year):
+        try:
+            v = int(v)
+        except ValueError:
             raise ValueError("Некорректно указан год выпуска")
-        return v
+        if v is not None and (v < 1900 or v > datetime.now().year):
+            raise ValueError("Некорректно указан год выпуска")
+        return int(v)

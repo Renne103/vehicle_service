@@ -20,14 +20,14 @@ class Cars(Base):
     model: Mapped[str] = mapped_column(String(128), nullable=False)
     brand: Mapped[str] = mapped_column(String(32), nullable=False)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-    year_of_release: Mapped[int] = mapped_column(nullable=True)
+    year_of_release: Mapped[int | None] = mapped_column(nullable=True)
     mileage: Mapped[int] = mapped_column(
         Numeric(precision=8, scale=0),
         CheckConstraint("mileage BETWEEN 0 AND 99999999"),
         nullable=False
         )
-    plate_license: Mapped[str] = mapped_column(String(10), nullable=True)
-    photo: Mapped[str] = mapped_column(String(256), nullable=True)
+    plate_license: Mapped[str | None] = mapped_column(String(10), nullable=True)
+    photo: Mapped[str | None] = mapped_column(String(256), nullable=True)
     
     user: Mapped["User"] = relationship(back_populates="cars")
     maintenances: Mapped[list["Maintenances"]] = relationship(
