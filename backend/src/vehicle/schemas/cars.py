@@ -7,7 +7,7 @@ class UsersCarsSchema(BaseModel):
     vin: str
     model: str
     brand: str
-    year_of_release: int | None = None
+    year_of_release: str | int | None = None
     mileage: int
     plate_license: str | None = None
 
@@ -15,13 +15,26 @@ class UsersCarsSchema(BaseModel):
     
     @field_validator("year_of_release")
     def validate_year_of_release(cls, v):
+        try:
+            v = int(v)
+        except ValueError:
+            raise ValueError("Некорректно указан год выпуска")
+        if v is None:
+            raise ValueError("Некорректно указан год выпуска")
         if v is not None and (v < 1900 or v > datetime.now().year):
             raise ValueError("Некорректно указан год выпуска")
-        return v
-
+        return int(v)
 
 class NewCarSchema(UsersCarsSchema):
     photo: str | None = None
+    
+    model_config = ConfigDict(from_attributes=True)
+    
+    @field_validator("vin")
+    def validate_vin(cls, v):
+        if len(v) != 17:
+            raise ValueError("Некорректно указан VIN")
+        return v
 
 
 class ViewCarSchema(UsersCarsSchema):
@@ -50,6 +63,10 @@ class ChangeCarSchema(BaseModel):
     
     @field_validator("year_of_release")
     def validate_year_of_release(cls, v):
-        if v is not None and v < 1900 or v > int(datetime.now().year):
+        try:
+            v = int(v)
+        except ValueError:
             raise ValueError("Некорректно указан год выпуска")
-        return v
+        if v is not None and (v < 1900 or v > datetime.now().year):
+            raise ValueError("Некорректно указан год выпуска")
+        return int(v)

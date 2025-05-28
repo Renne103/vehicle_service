@@ -44,7 +44,7 @@ def get_cars(
         }
     },
     status_code=status.HTTP_201_CREATED,
-    response_model=list[NewCarSchema]
+    response_model=list[ViewCarSchema]
     )
 def add_car(
     new_car: NewCarSchema,

@@ -60,7 +60,7 @@ class CarsService:
         car = ViewCarSchema.model_validate(car)
         return car
     
-    def delete_car(self, vin: str, username: str) -> list[ViewCarSchema]:
+    def delete_car(self, vin: str, username: str) -> list[NewCarSchema]:
         if not self.repository.exists_vin(vin=vin):
             raise CustomValidationError.single(
                 msg="Такой VIN не существует",

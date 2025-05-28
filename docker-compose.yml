@@ -5,7 +5,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./backend/src/vehicle/:/app/src/vehicle/
+      # - ./backend/src/vehicle/:/app/src/vehicle/
       - photo_storage:/app/src/vehicle/photos/cars
     env_file:
       - ./backend/.env

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
-from vehicle.schemas.cars import ChangeCarSchema, UsersCarsSchema, NewCarSchema, ViewCarSchema, UserCarSchema
+from vehicle.schemas.cars import ChangeCarSchema, NewCarSchema, ViewCarSchema, UserCarSchema
 from vehicle.models.cars import Cars
 from vehicle.models.users import User
 
@@ -26,7 +26,7 @@ class CarsRepository:
             .order_by(Cars.date_of_create.desc())
         )
         result = self.session.execute(stmt).mappings().all()
-        return [NewCarSchema.model_validate(car) for car in result]
+        return [ViewCarSchema.model_validate(car) for car in result]
     
     def add_car(self, user_id: int, data: NewCarSchema, username: str) -> list[ViewCarSchema]:
         new_car = Cars(**data.model_dump(), user_id=user_id)
