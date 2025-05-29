@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import styles from "./Header.module.scss";
+import logo from "../../assets/logo.png";
 
 const Header = () => {
   const location = useLocation();
@@ -8,7 +9,7 @@ const Header = () => {
     <header className={styles.header}>
       <div className={styles.left}>
         <Link to="/" className={styles.logo}>
-          Лого
+          <img src={logo} alt="logo" />
         </Link>
       </div>
       <nav className={styles.right}>

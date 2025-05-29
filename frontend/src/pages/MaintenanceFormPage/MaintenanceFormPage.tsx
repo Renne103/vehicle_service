@@ -18,6 +18,7 @@ import Layout from "../../components/Layot";
 import Textarea from "../../components/TextArea/TextArea";
 import SelectInput from "../../components/SelectInput/SelectInput";
 import DocInput from "../../components/DocInput/DocInput";
+import DateInput from "../../components/Input/DateInput";
 
 const MaintenanceFormPage = () => {
   const { vin: paramVin, id: paramId } = useParams<{
@@ -94,16 +95,17 @@ const MaintenanceFormPage = () => {
         </h1>
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-            <Input
+            {/* <Input
               label="Дата"
               name="date"
               placeholder="ДД-ММ-ГГГГ"
               isRequired
-            />
+            /> */}
+            <DateInput placeholder="Дата" name="date" isRequired={true} />
             <Input
               label="Пробег"
               name="mileage"
-              placeholder="Введите пробег"
+              placeholder="Введите текущий пробег в км"
               isRequired
             />
             <Input
