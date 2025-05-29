@@ -17,14 +17,14 @@ services:
     restart: on-failure
   
 
-  tests:
-    build:
-      context: ./backend/
-      dockerfile: Dockerfile
-      target: test          # <-- важный момент
-    env_file:
-      - ./backend/.env
-    command: pytest tests -v --disable-warnings
+  # tests:
+  #   build:
+  #     context: ./backend/
+  #     dockerfile: Dockerfile
+  #     target: test          # <-- важный момент
+  #   env_file:
+  #     - ./backend/.env
+  #   command: pytest tests -v --disable-warnings
 
   
   db:
