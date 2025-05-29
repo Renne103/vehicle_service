@@ -29,7 +29,9 @@ class MaintenanceCategory(str, Enum):
     CLIMATE = "Система кондиционирования"
     BODY = "Кузовные работы"
     OTHER = "Прочие работы"
-
+    REFUELING = "Заправка"
+    INSURANCE = "Страховка"
+    LOAN_PAYMENT = "Платеж по кредиту"
 
 class Maintenances(Base):
     __tablename__ = "maintenances"
