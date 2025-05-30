@@ -46,9 +46,13 @@ function Step({ type, step }: { type: "one" | "two" | "three"; step: number }) {
           </Link>
         ) : (
           <>
-            <p className={styles.subtitle} style={{ color: "#000000" }}>
+            <Link
+              className={styles.subtitle}
+              style={{ color: "#000000", background: "none", border: "none" }}
+              to={`/auth`}
+            >
               Пропустить
-            </p>
+            </Link>
             <Link
               style={{ background: "none", border: "none" }}
               to={`/onboarding/${step + 1}`}
