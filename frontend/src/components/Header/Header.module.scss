@@ -48,4 +48,8 @@
 	  left: 0;
 	}
   }
-  
+  .modal{
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+  }
