@@ -8,7 +8,6 @@ services:
     ports:
       - 8000:8000
     volumes:
-      # - ./backend/src/vehicle/:/app/src/vehicle/
       - photo_storage:/app/src/vehicle/photos/cars
       - ./backend/src/vehicle/migrations/:/app/src/vehicle/migrations/
     env_file:
@@ -18,14 +17,14 @@ services:
     restart: on-failure
   
 
-  # tests:
-  #   build:
-  #     context: ./backend/
-  #     dockerfile: Dockerfile
-  #     target: test          # <-- важный момент
-  #   env_file:
-  #     - ./backend/.env
-  #   command: pytest tests -v --disable-warnings
+  tests:
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+      target: test
+    env_file:
+      - ./backend/.env
+    command: pytest tests -v --disable-warnings
 
   
   db:
@@ -49,16 +48,16 @@ services:
       - photo_storage:/app/photo
     restart: always
   
-  # bot:
-  #   build: ./bot
-  #   command: python -m bot.main
-  #   env_file:
-  #     - ./bot/.env
-  #   depends_on:
-  #     - db
-  #   volumes:
-  #     - ./bot/logs:/app/logs
-  #   restart: on-failure
+  bot:
+    build: ./bot
+    command: python -m bot.main
+    env_file:
+      - ./bot/.env
+    depends_on:
+      - db
+    volumes:
+      - ./bot/logs:/app/logs
+    restart: on-failure
 
 volumes:
   vehicle_db:
