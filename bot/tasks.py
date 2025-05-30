@@ -102,7 +102,7 @@ def collect_notifications(car: Cars) -> list[str]:
     return notifications
 
 
-@aiocron.crontab("0 6 * * *")
+@aiocron.crontab("0 9 * * *")
 async def send_maintenance_notification_task() -> None:
     async for session in get_async_session():
         service = UserService(session=session)

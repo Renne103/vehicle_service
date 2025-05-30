@@ -7,11 +7,7 @@ def create_main_keyboard() -> ReplyKeyboardMarkup:
         keyboard=[
             [
                 KeyboardButton(text="Посмотреть автомобили"),
-                KeyboardButton(text="Добавить автомобиль"),
-            ],
-            [
-                KeyboardButton(text="Удалить автомобиль"),
-                KeyboardButton(text="Изменить автомобиль"),
+                KeyboardButton(text="Настроить уведомления")
             ],
         ],
         resize_keyboard=True,
